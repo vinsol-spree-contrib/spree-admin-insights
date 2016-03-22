@@ -1,0 +1,5 @@
+<% if can? :admin, Spree::Insight %>
+  <ul class="nav nav-sidebar">
+    <%= tab Spree::Insight, url: spree.admin_insights_url, icon: 'leaf', label: 'Insights' %>
+  </ul>
+<% end %>
