@@ -1,0 +1,75 @@
+<script type="text/x-tmpl" id="search-tmpl">
+  <div data-hook="admin_insights_sidebar">
+    <form id="filter-search" action="{%= o['url'] %}" accept-charset="UTF-8" method="get">
+      <div class="quick_search_form">
+      </div>
+
+      {% if(o['search_attributes']['name']) { %}
+        <div class="row">
+          <div class="col col-md-6">
+            <div data-hook="admin_property_index_search" class="form-group">
+              <label for="search_name">{%= o['search_attributes']['name'] %}</label>
+              <input type="text" name="search[name]" id="search_name" class="form-control js-quick-search-target js-filterable" placeholder="Name">
+            </div>
+          </div>
+        </div>
+      {% } %}
+
+      {% if(o['search_attributes']['email_cont']) { %}
+        <div class="row">
+          <div class="col col-md-6">
+            <div data-hook="admin_property_index_search" class="form-group">
+              <label for="search_email_cont">{%= o['search_attributes']['email_cont'] %}</label>
+              <input type="text" name="search[email_cont]" id="search_email_cont" class="form-control js-quick-search-target js-filterable" placeholder="Email">
+            </div>
+          </div>
+        </div>
+      {% } %}
+
+      {% if(o['search_attributes']['keywords_cont']) { %}
+        <div class="row">
+          <div class="col col-md-6">
+            <div data-hook="admin_property_index_search" class="form-group">
+              <label for="search_keywords_cont">{%= o['search_attributes']['keywords_cont'] %}</label>
+              <input type="text" name="search[keywords_cont]" id="search_keywords_cont" class="form-control js-quick-search-target js-filterable" placeholder="Keyword">
+            </div>
+          </div>
+        </div>
+      {% } %}
+
+      <div class="row">
+        <div class="date-range-filter col-md-8">
+          <div class="form-group">
+            <div class="row no-padding-bottom">
+              <div class="col-md-6">
+                <label for="search_start_date">{%= o['search_attributes']['start_date'] %}</label>
+                <div class="input-group">
+                  <input type="text" name="search[start_date]" id="search_start_date" class="datepicker datepicker-from form-control js-filterable" placeholder="Start">
+                  <span class="input-group-addon">
+                    <i class="icon icon-calendar"></i>
+                  </span>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <label for="search_end_date">{%= o['search_attributes']['end_date'] %}</label>
+                <div class="input-group">
+                  <input type="text" name="search[end_date]" id="search_end_date" class="datepicker datepicker-to form-control js-filterable" placeholder="Stop">
+                  <span class="input-group-addon">
+                    <i class="icon icon-calendar"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="form-actions" data-hook="admin_insights_index_search_buttons">
+        <button name="button" type="submit" class="btn btn-primary "><span class="icon icon-search"></span> Search</button>
+      </div>
+
+    </form>
+  </div>
+</script>

@@ -1,0 +1,5 @@
+<ul id="sidebar-insights" class="collapse nav nav-pills nav-stacked" data-hook="admin_insight_sub_tabs">
+  <% Spree::ReportGenerationService::REPORTS.keys.each do |_key| %>
+    <%= tab _key, url: admin_insights_path(type: _key), css_class: selected?(params[:type], _key) ? 'selected' : '' %>
+  <% end %>
+<ul>

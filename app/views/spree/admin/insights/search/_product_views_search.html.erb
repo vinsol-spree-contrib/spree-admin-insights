@@ -1,0 +1,13 @@
+<% content_for :quick_search_form do %>
+  <div class="row">
+    <div class="col col-md-6">
+      <div data-hook="admin_property_index_search" class="form-group">
+        <%= label_tag :search_name, Spree.t(:name) %>
+        <%= text_field_tag 'search[name]', params.fetch(:search, {})[:name], class: "form-control js-quick-search-target js-filterable" %>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+    </div>
+  </div>
+<% end %>

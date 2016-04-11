@@ -1,0 +1,27 @@
+<div class='spree-head'>
+  <figure>
+    <%= pdf_logo %>
+  </figure>
+</div>
+<h3 id="report-head">
+  <%= Spree.t(@report_name) %>
+</h3>
+
+<table class="table table-bordered" id="admin-insight" data-hook>
+  <thead>
+    <tr>
+      <% @headers.each do |_header_| %>
+        <th><%= Spree.t(_header_[:value], scope: [:insight, @report_name], default: _header_[:name]) %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stats.each do |stat| %>
+      <tr>
+        <% stat.values.each do |_stat_| %>
+          <td><%= _stat_ %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

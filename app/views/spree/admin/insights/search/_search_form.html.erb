@@ -1,0 +1,41 @@
+<div data-hook="admin_insights_sidebar">
+  <%= form_tag form_action(@report_name, params[:type]), method: :get, id: "filter-search" do %>
+    <div class="quick_search_form">
+    </div>
+    <div class="row">
+      <div class="date-range-filter col-md-8">
+        <div class="form-group">
+          <div class="row no-padding-bottom">
+            <div class="col-md-6">
+              <%= label_tag :search_start_date, Spree.t(:start_date) %>
+              <div class="input-group">
+                <%= text_field_tag 'search[start_date]', params.fetch(:search, {})[:start_date], class: 'datepicker datepicker-from form-control js-filterable', placeholder: Spree.t(:start) %>
+                <span class="input-group-addon">
+                  <i class="icon icon-calendar"></i>
+                </span>
+              </div>
+
+            </div>
+            <div class="col-md-6">
+              <%= label_tag :search_end_date, Spree.t(:end_date) %>
+              <div class="input-group">
+                <%= text_field_tag 'search[end_date]', params.fetch(:search, {})[:end_date], class: 'datepicker datepicker-to form-control js-filterable', placeholder: Spree.t(:stop) %>
+                <span class="input-group-addon">
+                  <i class="icon icon-calendar"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-actions" data-hook="admin_insights_index_search_buttons">
+      <%= button Spree.t(:search), 'search' %>
+    </div>
+
+  <% end %>
+</div>
+
+

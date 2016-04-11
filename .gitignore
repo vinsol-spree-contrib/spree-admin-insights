@@ -1,35 +1,54 @@
-*.rbc
-capybara-*.html
-.rspec
-/log
-/tmp
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/public/system
-/coverage/
-/spec/tmp
-**.orig
-rerun.txt
-pickle-email-*.html
+\#*
+*~
+.#*
+.DS_Store
+.idea
+.project
+.sass-cache
+coverage
+Gemfile.lock
+nbproject
+pkg
+*.swp
+spec/dummy
 
-# TODO Comment out these rules if you are OK with secrets being uploaded to the repo
-config/initializers/secret_token.rb
-config/secrets.yml
+*.gem
+*.rbc
+/.config
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/*
+
+## Specific to RubyMotion:
+.dat*
+.repl_history
+build/
+
+## Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
 
 ## Environment normalization:
-/.bundle
+/.bundle/
 /vendor/bundle
+/lib/bundler/man/
 
-# these should all be checked in to normalize the environment:
-# Gemfile.lock, .ruby-version, .ruby-gemset
-
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
-
-# if using bower-rails ignore default bower_components path bower.json files
-/vendor/assets/bower_components
-*.bowerrc
-bower.json
-
-# Ignore pow environment settings
-.powenv
+.ruby-version
+/public/system
+.rspec
+*.sassc
+*.DS_Store
+/test
+/config/*.yml
+*.log
+/public/test_files
+/public/system/*
+/public/*.json
+.byebug_history

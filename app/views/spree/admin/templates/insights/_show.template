@@ -1,0 +1,33 @@
+<script type="text/x-tmpl" id="tmpl">
+  <table class="table admin-insight table-hover" id="admin-insight">
+    <thead>
+      <tr>
+        {% for(var i = 0; i < o['headers'].length; i++) { %}
+          <th>
+            {% if(o['headers'][i].sortable) { %}
+              <a href="{%= o['request_path'] %}?type={%= o['report_type'] %}&sort%5Battribute%5D={%= o['headers'][i].value %}&sort%5Btype%5D={%= (o['headers'][i].sorted == 'asc') ? 'desc' : 'asc' %}" class="sortable-link {%= o['headers'][i].sorted %}" data-attribute="{%= o['headers'][i].value %}">{%= o['headers'][i].name %}</a>
+            {% } else { %}
+              {%= o['headers'][i].name %}
+            {% } %}
+          </th>
+        {% } %}
+      </tr>
+    </thead>
+    <tbody class='table-data'>
+      {% for(var i = 0; i < o['stats'].length; i++) { %}
+        <tr>
+          {% for(var j = 0; j < o['headers'].length; j++) { %}
+            <td>
+              {% if (o['headers'][j].type == 'integer') { %}
+                {%= o['stats'][i][o['headers'][j].value] || 0 %}
+              {% } else { %}
+                {%= o['stats'][i][o['headers'][j].value] || '-' %}
+              {% } %}
+            </td>
+          {% } %}
+        </tr>
+      {% } %}
+    </tbody>
+  </table>
+
+</script>

@@ -1,0 +1,125 @@
+en:
+  spree:
+    insights: Insights
+    insight:
+      heading: 'Insights: %{type}'
+      tab_heading: Insights
+      not_found: Report not found.
+      product_views:
+        title: Product Views
+        description: To fetch the number of times Product Show page is viewed by the Customers.
+        product_name: Product
+        views: Views
+        users: Users
+        guest_sessions: Guest Sessions
+      cart_additions:
+        title: Product Add to cart
+        additions: Additions
+        description: Will project the data about how many times product has been added to the cart.
+        product_name: Product
+        quantity_change: Cart Addition(Qty)
+        sku: Variant
+      cart_removals:
+        title: Product Removed from cart
+        description: Will project the data about how many time product has been removed from cart.
+        product_name: Product
+        quantity_change: Cart Removal(Qty)
+        removals: Removals
+        sku: Variant
+      cart_updations:
+        title: Product Updation
+        description: Will project the data about how many times product has been updated from the cart.
+        product_name: Product
+        quantity_decrease: Quantity Decreased(From Cart)
+        quantity_increase: Quantity Increased(From Cart)
+        removals: Quantity Removed(From Cart)
+        sku: Variant
+        updations: Total Updation Requests
+      product_views_to_cart_additions:
+        title: Product Views Vs Cart Additions
+        description: Ratio of number of views (on product show page) to number of times product has been added to the cart after view.
+        cart_additions: Cart Addition Requests
+        product_name: Product
+        views: Views
+      trending_search:
+        title: Trending Searches
+        description: You can view/search list of keywords which have been searched by customers.
+        searched_term: Searched Term
+        occurrences: Occurrences
+      users_not_converted:
+        title: Users Not Converted
+        description: Information about number of registered users who haven’t purchased any product after registration.
+        signup_date: Signup At
+        user_email: Email
+      users_who_recently_purchased:
+        title: Users who purchased recently
+        description: Number of users who frequently purchased products
+        last_purchase_date: Last Purchase At
+        last_purchased_order_number: Last Purchased Order
+        purchase_count: Purchased Count
+        user_email: Email
+      users_who_have_not_recently_purchased:
+        title: Users who didn't purchase recently
+        description: Number of users who have not purchased anything since a particular time period
+        last_purchase_date: Last Purchase At
+        last_purchased_order_number: Last Purchased Order
+        user_email: Email
+      payment_method_transactions:
+        title: Payment Method Transactions Count
+        description: Transactions from different payment methods
+        payment_method_name: Payment Method
+        payment_count: Transaction Count
+      payment_method_transactions_conversion_rate:
+        title: Payment Method Transaction Conversion Rate
+        description: Success/Failure rate of different payment methods
+        failed_payments_count: Failed Transaction Count
+        invalid_payments_count: Invalid Payments Count
+        payment_method_name: Payment Method
+        pending_payments_count: Pending Payments Count
+        successful_payments_count: Successful Transaction Count
+      promotional_cost:
+        title: Promotional Cost
+        description: Total money invested on a particular promotion  - Admin will view total money invested, total revenue and profit from a particular promotion.
+        promotion_code: Code
+        promotion_discount: Discount
+        promotion_name: Promotion
+        promotion_start_date: Start Date
+        promotion_end_date: End Date
+        usage_count: Usage Count
+      sales_performance:
+        title: Sales Performance
+        description: Info about revenue, tax, shipment total and return amount.
+        adjustment_total: Adjustment Total
+        cost_price: Cost Price
+        months_name: Month
+        profit_loss: Profit Loss
+        refund_amount: Refund Amount
+        revenue: Revenue
+        sale_price: Sale Price
+        shipping_charges: Shipping Charges
+        tax: Tax
+      unique_purchases:
+        title: Unique Purchases
+        description: Will project the data about how many unique users have purchased a particular product.
+        product_name: Product
+        sku: Variant
+        sold_count: Sold Count
+        users: Users
+      best_selling_products:
+        title: Best Selling Products
+        description: Best/least Selling Products as per maximum quantities purchased.
+        product_name: Product
+        sku: Variant
+        sold_count: Sold Count
+      product_views_to_purchases:
+        title: Product Views To Purchases
+        description: Ratio of number of views (on product show page) to number of times product has been purchased after view.
+        product_name: Product
+        purchases: Purchases
+        views: Views
+      returned_products:
+        title: Product Returned
+        description: Number of products returned
+        product_name: Product
+        return_count: Returned Count
+        sku: Variant
