@@ -1,7 +1,17 @@
 SpreeReportify
 ==============
 
-Introduction goes here.
+spree_reportify is a spree extension which provide insights to admin. Following analysis are provided by this extension
+1) Finance Analysis
+  This analysis provides insights on different aspects of business like which is the most frequently used payment method, sales tax collected every month etc.
+2) Product Analysis
+  This analysis provides insights on most purchased product, most viewed product, product added to cart most number of times etc.
+3) Promotion Analysis
+  This analysis provides insights on the usage of promotions
+4) Trending Search Analysis
+  This analysis provided insights on the the keywords that are generally used by the users to search products
+5) User Analysis
+  This analysis provided insights on user activities like users who recently signed up, users who recently purchased products
 
 Installation
 ------------
