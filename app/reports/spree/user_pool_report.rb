@@ -21,7 +21,7 @@ module Spree
       ]}
 
       group_new_sign_ups_by_months = SpreeReportify::ReportDb[new_sign_ups].
-      group(:months_name).
+      group(:year, :number, :months_name, :guest_users, :active_users).
       order(:year, :number).
       select{[
         number,
@@ -43,7 +43,7 @@ module Spree
       ]}
 
       visitors_by_months = SpreeReportify::ReportDb[vistors].
-      group(:months_name).
+      group(:year, :number, :months_name, :new_sign_ups).
       order(:year, :number).
       select{[
         number,
@@ -54,11 +54,10 @@ module Spree
         Sequel.as(0, :new_sign_ups)
       ]}
 
-
       union_of_stats = group_new_sign_ups_by_months.union(visitors_by_months)
 
       union_stats = SpreeReportify::ReportDb[union_of_stats].
-      group(:months_name).
+      group(:year, :number, :months_name).
       order(:year, :number).
       select{[
         months_name,
@@ -68,6 +67,7 @@ module Spree
         Sequel.as(SUM(:active_users), :active_users),
         Sequel.as(SUM(:new_sign_ups), :new_sign_ups)
       ]}
+
       fill_missing_values({guest_users: 0, active_users: 0, new_sign_ups: 0}, union_stats.all)
     end
 

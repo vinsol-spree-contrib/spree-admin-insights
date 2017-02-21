@@ -23,7 +23,7 @@ module Spree
       ]}
 
       group_by_months = SpreeReportify::ReportDb[payment_methods].
-      group(:months_name, :payment_method_name, :payment_state).
+      group(:year, :number, :months_name, :payment_method_name, :payment_state).
       order(:year, :number).
       select{[
         payment_method_name,
@@ -37,8 +37,8 @@ module Spree
       grouped_by_payment_method_name = group_by_months.all.group_by { |record| record[:payment_method_name] }
       data = []
       grouped_by_payment_method_name.each_pair do |name, collection|
-        collection.group_by { |r| r[:payment_state] }.each_pair do |state, collection|
-          data << fill_missing_values({ payment_method_name: name, payment_state: state, count: 0 }, collection)
+        collection.group_by { |r| r[:payment_state] }.each_pair do |state, state_collection|
+          data << fill_missing_values({ payment_method_name: name, payment_state: state, count: 0 }, state_collection)
         end
       end
       @data = data.flatten

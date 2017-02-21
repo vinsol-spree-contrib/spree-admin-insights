@@ -24,7 +24,9 @@ module Spree
       ).as(:all_orders_with_users)
 
       SpreeReportify::ReportDb[all_orders_with_users].
-      group(:all_orders_with_users__user_email).
+      group(:all_orders_with_users__user_email,
+            :all_orders_with_users__last_purchased_order_number,
+            :all_orders_with_users__last_purchase_date).
       order(sortable_sequel_expression)
     end
 

@@ -24,7 +24,7 @@ module Spree
       ]}
 
       group_by_months = SpreeReportify::ReportDb[order_join_line_item].
-      group(:months_name).
+      group(:year, :number, :months_name).
       order(:year, :number).
       select{[
         number,
@@ -48,7 +48,7 @@ module Spree
       ]}
 
       promotions_group_by_months = SpreeReportify::ReportDb[adjustments_with_month_name].
-      group(:months_name).
+      group(:year, :number, :months_name, :sale_price, :cost_price).
       order(:year, :number).
       select{[
         number,
@@ -62,7 +62,7 @@ module Spree
       ]}
 
       union_stats = SpreeReportify::ReportDb[group_by_months.union(promotions_group_by_months)].
-      group(:months_name).
+      group(:year, :number, :months_name).
       order(:year, :number).
       select{[
         number,

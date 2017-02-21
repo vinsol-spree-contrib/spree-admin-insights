@@ -24,7 +24,7 @@ module Spree
       ]}
 
       group_by_months = SpreeReportify::ReportDb[adjustments_with_month_name].
-      group(:months_name, :zone_id).
+      group(:year, :number, :months_name, :zone_id).
       order(:year, :number).
       select{[
         number,

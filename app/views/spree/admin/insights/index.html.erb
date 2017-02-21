@@ -6,7 +6,7 @@
   <%= Spree.t(:heading, type: params[:type].to_s.titleize, scope: :insight) %>
 <% end %>
 
-<div id='insights-div' class='container-fluid' >
+<div id='insights-div' class='container-fluid' data-hook="admin_insights_div">
   <div class="row">
     <%= select_tag :reports, options_for_select(@reports.map { |report_name| [ Spree.t(:title, scope: [:insight, report_name]), report_name, data: { url: admin_insight_url(report_name, type: params[:type]) }] }.unshift(['Select a report', '', data: { url: admin_insights_url(type: params[:type]) }, disabled: true]), @report_name || ''), class: 'select2' %>
   </div>

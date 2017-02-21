@@ -208,21 +208,25 @@ ReportLoader.prototype.populateInitialData = function() {
 };
 
 $(function() {
-  var inputs = {
-    insightsDiv:      $('#report-div'),
-    reportsSelectBox: $('#reports'),
-    resetButton: $('#reset'),
-    refreshButton: $('#refresh'),
-    removePaginationButton: $('#remove-pagination'),
-    applyPaginationButton: $('#apply-pagination'),
-    tableHelpers: $('#table-helpers'),
-    filterDiv: $('#search-div'),
-    paginatorDiv: $('#paginator-div'),
-    chartContainer: $('#chart-container'),
-    downloadLinks: $('.download-link')
-  },
-    reportLoader = new ReportLoader(inputs);
-  reportLoader.init();
-  reportLoader.bindEvents();
-  reportLoader.populateInitialData();
+  // Initialize only if we are on insights page
+  var is_admin_insights_page = $("[data-hook='admin_insights_div']").length;
+  if(is_admin_insights_page) {
+    var inputs = {
+      insightsDiv:      $('#report-div'),
+      reportsSelectBox: $('#reports'),
+      resetButton: $('#reset'),
+      refreshButton: $('#refresh'),
+      removePaginationButton: $('#remove-pagination'),
+      applyPaginationButton: $('#apply-pagination'),
+      tableHelpers: $('#table-helpers'),
+      filterDiv: $('#search-div'),
+      paginatorDiv: $('#paginator-div'),
+      chartContainer: $('#chart-container'),
+      downloadLinks: $('.download-link')
+    },
+      reportLoader = new ReportLoader(inputs);
+    reportLoader.init();
+    reportLoader.bindEvents();
+    reportLoader.populateInitialData();
+  }
 });
