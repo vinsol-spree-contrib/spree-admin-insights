@@ -15,40 +15,40 @@ module Spree
       where(users__created_at: @start_date..@end_date).
       select{[
         id.as(:user_id),
-        Sequel.as(YEAR(:users__created_at), :year),
-        Sequel.as(MONTHNAME(:users__created_at), :month_name),
-        Sequel.as(MONTH(:users__created_at), :number)
+        Sequel.as(DBUtils.year(:users__created_at), :year),
+        Sequel.as(DBUtils.month_name(:users__created_at), :month_name),
+        Sequel.as(DBUtils.month_number(:users__created_at), :number)
       ]}
 
       group_new_sign_ups_by_months = SpreeAdminInsights::ReportDb[new_sign_ups].
-      group(:months_name).
+      group(:months_name, :t1__year, :t1__number).
       order(:year, :number).
       select{[
         number,
         year,
-        Sequel.as(concat(month_name, ' ', IFNULL(year, 2016)), :months_name),
+        Sequel.as(concat(month_name, ' ', COALESCE(year, '2016')), :months_name),
         Sequel.as(0, :guest_users),
         Sequel.as(0, :active_users),
-        Sequel.as(IFNULL(COUNT(user_id), 0), :new_sign_ups)
+        Sequel.as(COALESCE(COUNT(user_id), 0), :new_sign_ups)
       ]}
 
       vistors = SpreeAdminInsights::ReportDb[:spree_page_events___page_events].
       where(page_events__created_at: @start_date..@end_date).
       select{[
-        Sequel.as(YEAR(:page_events__created_at), :year),
-        Sequel.as(MONTHNAME(:page_events__created_at), :month_name),
-        Sequel.as(MONTH(:page_events__created_at), :number),
+        Sequel.as(DBUtils.year(:page_events__created_at), :year),
+        Sequel.as(DBUtils.month_name(:page_events__created_at), :month_name),
+        Sequel.as(DBUtils.month_number(:page_events__created_at), :number),
         Sequel.as(actor_id, :user),
         Sequel.as(session_id, :session)
       ]}
 
       visitors_by_months = SpreeAdminInsights::ReportDb[vistors].
-      group(:months_name).
+      group(:months_name, :t1__year, :t1__number).
       order(:year, :number).
       select{[
         number,
         year,
-        Sequel.as(concat(month_name, ' ', IFNULL(year, 2016)), :months_name),
+        Sequel.as(concat(month_name, ' ', COALESCE(year, '2016')), :months_name),
         Sequel.as((COUNT(DISTINCT session) - COUNT(DISTINCT user)), :guest_users),
         Sequel.as(COUNT(DISTINCT user), :active_users),
         Sequel.as(0, :new_sign_ups)
@@ -58,7 +58,7 @@ module Spree
       union_of_stats = group_new_sign_ups_by_months.union(visitors_by_months)
 
       union_stats = SpreeAdminInsights::ReportDb[union_of_stats].
-      group(:months_name).
+      group(:months_name, :t1__year, :t1__number).
       order(:year, :number).
       select{[
         months_name,

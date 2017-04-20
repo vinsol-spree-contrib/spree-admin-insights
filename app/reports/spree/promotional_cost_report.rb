@@ -15,39 +15,53 @@ module Spree
     end
 
     def generate(options = {})
-      adjustments_with_month_name = SpreeAdminInsights::ReportDb[:spree_adjustments___adjustments].
-      join(:spree_promotion_actions___promotion_actions, id: :source_id).
-      join(:spree_promotions___promotions, id: :promotion_id).
-      where(adjustments__source_type: "Spree::PromotionAction").
-      where(adjustments__created_at: @start_date..@end_date). #filter by params
-      select{[
-        Sequel.as(abs(:amount), :promotion_discount),
-        Sequel.as(:promotions__id, :promotions_id),
-        :promotions__name___promotion_name,
-        :promotions__code___promotion_code,
-        Sequel.as(DATE_FORMAT(promotions__starts_at,'%d %b %y'), :promotion_start_date),
-        Sequel.as(DATE_FORMAT(promotions__expires_at,'%d %b %y'), :promotion_end_date),
-        Sequel.as(MONTHNAME(:adjustments__created_at), :month_name),
-        Sequel.as(YEAR(:adjustments__created_at), :year),
-        Sequel.as(MONTH(:adjustments__created_at), :number)
-      ]}
+      date_format = DBUtils.adapter == :postgresql ? 'DD Mon YYYY' : '%d %b %y'
 
-      group_by_months = SpreeAdminInsights::ReportDb[adjustments_with_month_name].
-      group(:months_name, :promotions_id).
-      order(:year, :number).
-      select{[
-        number,
-        promotion_name,
-        year,
-        promotion_code,
-        promotion_start_date,
-        promotion_end_date,
-        Sequel.as(concat(month_name, ' ', year), :months_name),
-        Sequel.as(SUM(promotion_discount), :promotion_discount),
-        Sequel.as(count(:promotions_id), :usage_count),
-        promotions_id
-      ]}
-      grouped_by_promotion = group_by_months.all.group_by { |record| record[:promotion_name] }
+      adjustments_with_month_name = SpreeAdminInsights::ReportDb[:spree_adjustments___adjustments].
+        join(:spree_promotion_actions___promotion_actions, id: :source_id).
+        join(:spree_promotions___promotions, id: :promotion_id).
+        where(adjustments__source_type: "Spree::PromotionAction").
+        where(adjustments__created_at: @start_date..@end_date).#filter by params
+        select { [
+          Sequel.as(abs(:amount), :promotion_discount),
+          Sequel.as(:promotions__id, :promotions_id),
+          :promotions__name___promotion_name,
+          :promotions__code___promotion_code,
+          Sequel.as(DBUtils.date_format(promotions__starts_at, date_format), :promotion_start_date),
+          Sequel.as(DBUtils.date_format(promotions__expires_at, date_format), :promotion_end_date),
+          Sequel.as(DBUtils.month_name(:adjustments__created_at), :month_name),
+          Sequel.as(DBUtils.year(:adjustments__created_at), :year),
+          Sequel.as(DBUtils.month_number(:adjustments__created_at), :number)
+        ] }
+
+      grouped_by_months = SpreeAdminInsights::ReportDb[adjustments_with_month_name]
+                            .group(:months_name, :promotions_id, :year, :number)
+                            .order(:year, :number)
+                            .select { [
+        Sequel.as(CONCAT(month_name, ' ', year), :months_name),
+        Sequel.as(SUM(:promotion_discount), :promotion_discount),
+        Sequel.as(COUNT(:promotions_id), :usage_count),
+        :year,
+        :number,
+        :promotions_id
+      ] }.as(:grouped_by_months)
+
+      results = SpreeAdminInsights::ReportDb[grouped_by_months]
+                  .left_join(:spree_promotions___promotions, id: :grouped_by_months__promotions_id)
+                  .select { [
+        Sequel.as(:promotions__name, :promotion_name),
+        Sequel.as(:promotions__code, :promotion_code),
+        Sequel.as(:promotions__starts_at, :promotion_start_date),
+        Sequel.as(:promotions__expires_at, :promotion_end_date),
+        :grouped_by_months__usage_count,
+        :grouped_by_months__promotion_discount,
+        :grouped_by_months__year,
+        :grouped_by_months__number,
+        :grouped_by_months__promotions_id,
+        :grouped_by_months__months_name
+      ] }
+
+      grouped_by_promotion = results.all.group_by { |record| record[:promotion_name] }
       data = []
       grouped_by_promotion.each_pair do |promotion_name, collection|
         data << fill_missing_values({ promotion_discount: 0, usage_count: 0, promotion_name: promotion_name }, collection)
@@ -91,10 +105,10 @@ module Spree
           },
           tooltip: { valuePrefix: '$' },
           legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              borderWidth: 0
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
           },
           series: chart_data[:collection].map { |key, value| { type: 'column', name: key, data: value.map { |r| r[:promotion_discount].to_f } } }
         }
@@ -116,10 +130,10 @@ module Spree
           },
           tooltip: { valuePrefix: '#' },
           legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              borderWidth: 0
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
           },
           series: chart_data[:collection].map { |key, value| { name: key, data: value.map { |r| r[:usage_count].to_i } } }
         }

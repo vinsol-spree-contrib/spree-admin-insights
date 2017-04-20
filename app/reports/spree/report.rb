@@ -1,6 +1,5 @@
 module Spree
   class Report
-
     attr_accessor :sortable_attribute, :sortable_type
 
     def no_pagination?
@@ -14,7 +13,7 @@ module Spree
     def initialize(options)
       @search = options.fetch(:search, {})
       start_date = @search[:start_date]
-      @start_date = start_date.present? ? Date.parse(start_date) :  Date.new(Date.current.year)
+      @start_date = start_date.present? ? Date.parse(start_date) : Date.new(Date.current.year)
 
       end_date = @search[:end_date]
       # 1.day is added to date so that we can get current date records
@@ -37,9 +36,11 @@ module Spree
 
     def fill_missing_values(default_object, incomplete_result_set)
       complete_result_set = []
-      year_month_list = (@start_date..@end_date).map{ |date| [date.year, date.month] }.uniq
+      year_month_list = (@start_date..@end_date).map { |date| [date.year, date.month] }.uniq
       year_month_list.each do |year_month|
-        index = incomplete_result_set.index { |obj| obj[:year] == year_month.first && obj[:number] == year_month.second }
+        index = incomplete_result_set.index do |obj|
+          obj[:year].to_s == year_month.first.to_s && obj[:number].to_s == year_month.second.to_s
+        end
         if index
           complete_result_set.push(incomplete_result_set[index])
         else
@@ -56,7 +57,5 @@ module Spree
         charts: []
       }
     end
-
-
   end
 end

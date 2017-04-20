@@ -16,13 +16,13 @@ module Spree
       select{[
         Sequel.as(payment_methods__name, :payment_method_name),
         Sequel.as(payments__amount, :payment_amount),
-        Sequel.as(MONTHNAME(:payments__created_at), :month_name),
-        Sequel.as(MONTH(:payments__created_at), :number),
-        Sequel.as(YEAR(:payments__created_at), :year)
+        Sequel.as(DBUtils.month_name(:payments__created_at), :month_name),
+        Sequel.as(DBUtils.month_number(:payments__created_at), :number),
+        Sequel.as(DBUtils.year(:payments__created_at), :year)
       ]}
 
       group_by_months = SpreeAdminInsights::ReportDb[payments].
-      group(:months_name, :payment_method_name).
+      group(:months_name, :payment_method_name, :t1__year, :t1__number).
       order(:year, :number).
       select{[
         number,
@@ -37,6 +37,7 @@ module Spree
       grouped_by_payment_method_name.each_pair do |name, collection|
         data << fill_missing_values({ payment_method_name: name, payment_amount: 0 }, collection)
       end
+
       @data = data.flatten
     end
 

@@ -12,18 +12,20 @@ module Spree
     end
 
     def generate(options = {})
-      SpreeAdminInsights::ReportDb[:spree_users___users].
-      left_join(:spree_orders___orders, user_id: :id).
-      where(orders__completed_at: nil, orders__number: nil).
-      where(users__created_at: @start_date..@end_date).where(Sequel.ilike(:users__email, @email_cont)). #filter by params
-      order(sortable_sequel_expression)
+      users = SpreeAdminInsights::ReportDb[:spree_users___users].
+        left_join(:spree_orders___orders, user_id: :id).
+        where(orders__completed_at: nil, orders__number: nil).
+        where(users__created_at: @start_date..@end_date).where(Sequel.ilike(:users__email, @email_cont)) #filter by params
+
+      return users if sortable_sequel_expression.expression.nil?
+      users.order(sortable_sequel_expression)
     end
 
     def select_columns(dataset)
-      dataset.select{[
+      dataset.select { [
         users__email.as(user_email),
         users__created_at.as(signup_date)
-      ]}
+      ] }
     end
   end
 end

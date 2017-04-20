@@ -17,14 +17,14 @@ module Spree
       join(:spree_variants, spree_variants__id: :variant_id).
       join(:spree_products, id: :product_id).
       where(spree_return_items__created_at: @start_date..@end_date).
-      group(:variant_id).
+      group(:variant_id, :spree_variants__sku, :spree_products__name).
       order(sortable_sequel_expression)
     end
 
     def select_columns(dataset)
       dataset.select{[
         spree_products__name.as(product_name),
-        Sequel.as(IF(STRCMP(spree_variants__sku, ''), spree_variants__sku, spree_products__name), :sku),
+        Sequel.as(Sequel.lit("CASE spree_variants.sku WHEN '' THEN spree_products.name ELSE spree_variants.sku END"), :sku),
         Sequel.as(count(:variant_id), :return_count)
       ]}
     end
