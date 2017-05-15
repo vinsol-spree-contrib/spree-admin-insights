@@ -12,21 +12,21 @@ module Spree
 
     def generate
       SpreeAdminInsights::ReportDb[:spree_cart_events___cart_events].
-      join(:spree_variants___variants, id: :variant_id).
-      join(:spree_products___products, id: :product_id).
-      where(cart_events__activity: 'add').
-      where(cart_events__created_at: @start_date..@end_date).
-      group(:variant_id).
-      order(sortable_sequel_expression)
+        join(:spree_variants___variants, id: :variant_id).
+        join(:spree_products___products, id: :product_id).
+        where(cart_events__activity: 'add').
+        where(cart_events__created_at: @start_date..@end_date).
+        group(:variant_id, :variants__sku, :products__name).
+        order(sortable_sequel_expression)
     end
 
     def select_columns(dataset)
-      dataset.select{[
+      dataset.select { [
         products__name.as(product_name),
-        Sequel.as(IF(STRCMP(variants__sku, ''), variants__sku, products__name), :sku),
+        Sequel.as(Sequel.lit("CASE variants.sku WHEN '' THEN products.name ELSE variants.sku END"), :sku),
         Sequel.as(count(:products__name), :additions),
         Sequel.as(sum(cart_events__quantity), :quantity_change)
-      ]}
+      ] }
     end
   end
 end

@@ -11,28 +11,28 @@ module Spree
 
     def generate
       payment_methods = SpreeAdminInsights::ReportDb[:spree_payment_methods___payment_methods].
-      join(:spree_payments___payments, payment_method_id: :id).
-      where(payments__created_at: @start_date..@end_date). #filter by params
-      select{[
+        join(:spree_payments___payments, payment_method_id: :id).
+        where(payments__created_at: @start_date..@end_date).#filter by params
+      select { [
         payment_method_id,
         Sequel.as(name, :payment_method_name),
-        Sequel.as(IF(STRCMP(state, 'pending'), state, 'to be captured'), :payment_state),
-        Sequel.as(MONTHNAME(:payments__created_at), :month_name),
-        Sequel.as(MONTH(:payments__created_at), :number),
-        Sequel.as(YEAR(:payments__created_at), :year)
-      ]}
+        Sequel.as(Sequel.lit("CASE state WHEN 'pending' THEN 'to be captured' ELSE state END"), :payment_state),
+        Sequel.as(DBUtils.month_name(:payments__created_at), :month_name),
+        Sequel.as(DBUtils.month_number(:payments__created_at), :number),
+        Sequel.as(DBUtils.year(:payments__created_at), :year)
+      ] }
 
       group_by_months = SpreeAdminInsights::ReportDb[payment_methods].
-      group(:months_name, :payment_method_name, :payment_state).
-      order(:year, :number).
-      select{[
+        group(:months_name, :payment_method_name, :payment_state, :t1__year, :t1__number).
+        order(:year, :number).
+        select { [
         payment_method_name,
         number,
         payment_state,
         year,
         Sequel.as(concat(month_name, ' ', year), :months_name),
         Sequel.as(COUNT(payment_method_id), :count),
-      ]}
+      ] }
 
       grouped_by_payment_method_name = group_by_months.all.group_by { |record| record[:payment_method_name] }
       data = []
@@ -74,10 +74,10 @@ module Spree
               },
               tooltip: { valuePrefix: '#' },
               legend: {
-                  layout: 'vertical',
-                  align: 'right',
-                  verticalAlign: 'middle',
-                  borderWidth: 0
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
               },
               series: collection.group_by { |r| r[:payment_state] }.map { |key, value| { name: key, data: value.map { |r| r[:count].to_i } } }
             }

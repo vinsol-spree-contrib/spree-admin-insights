@@ -9,48 +9,54 @@ module Spree
     end
 
     def generate(options = {})
-      order_join_line_item = SpreeAdminInsights::ReportDb[:spree_orders___orders].
-      exclude(completed_at: nil).
-      where(orders__created_at: @start_date..@end_date). #filter by params
-      join(:spree_line_items___line_items, order_id: :id).
-      group(:line_items__order_id).
-      select{[
-        Sequel.as(SUM(IFNULL(line_items__cost_price, line_items__price) * line_items__quantity), :cost_price),
-        Sequel.as(orders__item_total, :sale_price),
-        Sequel.as(orders__item_total - SUM(IFNULL(line_items__cost_price, line_items__price) * line_items__quantity), :profit_loss),
-        Sequel.as(MONTHNAME(:orders__created_at), :month_name),
-        Sequel.as(MONTH(:orders__created_at), :number),
-        Sequel.as(YEAR(:orders__created_at), :year)
-      ]}
+      costs = SpreeAdminInsights::ReportDb[:spree_line_items___line_items]
+                .group(:line_items__order_id)
+                .select { [
+        :line_items__order_id,
+        Sequel.as(Sequel.lit("SUM((COALESCE(line_items.cost_price, line_items.price) * line_items.quantity))"), :cost_price)
+      ] }.as(:costs)
+
+      order_join_line_item = SpreeAdminInsights::ReportDb[:spree_orders___orders]
+                               .exclude(completed_at: nil)
+                               .where(orders__created_at: @start_date..@end_date) #filter by params
+                               .join(costs, order_id: :id)
+                               .select { [
+        :costs__cost_price,
+        Sequel.as(:orders__item_total, :sale_price),
+        Sequel.as(Sequel.lit("orders.item_total - costs.cost_price"), :profit_loss),
+        Sequel.as(DBUtils.month_name(:orders__created_at), :month_name),
+        Sequel.as(DBUtils.month_number(:orders__created_at), :number),
+        Sequel.as(DBUtils.year(:orders__created_at), :year)
+      ] }
 
       group_by_months = SpreeAdminInsights::ReportDb[order_join_line_item].
-      group(:months_name).
-      order(:year, :number).
-      select{[
+        group(:months_name, :t1__year, :t1__number).
+        order(:year, :number).
+        select { [
         number,
-        Sequel.as(IFNULL(year, 2016), :year),
-        Sequel.as(concat(month_name, ' ', IFNULL(year, 2016)), :months_name),
-        Sequel.as(IFNULL(SUM(sale_price), 0), :sale_price),
-        Sequel.as(IFNULL(SUM(cost_price), 0), :cost_price),
-        Sequel.as(IFNULL(SUM(profit_loss), 0), :profit_loss),
-        Sequel.as((IFNULL(SUM(profit_loss), 0) / SUM(cost_price)) * 100, :profit_loss_percent),
+        Sequel.as(COALESCE(year, '2016'), :year),
+        Sequel.as(concat(month_name, ' ', COALESCE(year, '2016')), :months_name),
+        Sequel.as(COALESCE(SUM(sale_price), 0), :sale_price),
+        Sequel.as(COALESCE(SUM(cost_price), 0), :cost_price),
+        Sequel.as(COALESCE(SUM(profit_loss), 0), :profit_loss),
+        Sequel.as((COALESCE(SUM(profit_loss), 0) / NULLIF(SUM(cost_price), 0)) * 100, :profit_loss_percent),
         Sequel.as(0, :promotion_discount)
-      ]}
+      ] }
 
       adjustments_with_month_name = SpreeAdminInsights::ReportDb[:spree_adjustments___adjustments].
-      where(adjustments__source_type: "Spree::PromotionAction").
-      where(adjustments__created_at: @start_date..@end_date). #filter by params
-      select{[
+        where(adjustments__source_type: "Spree::PromotionAction").
+        where(adjustments__created_at: @start_date..@end_date).#filter by params
+      select { [
         Sequel.as(abs(:amount), :promotion_discount),
-        Sequel.as(MONTHNAME(:adjustments__created_at), :month_name),
-        Sequel.as(YEAR(:adjustments__created_at), :year),
-        Sequel.as(MONTH(:adjustments__created_at), :number)
-      ]}
+        Sequel.as(DBUtils.month_name(:adjustments__created_at), :month_name),
+        Sequel.as(DBUtils.month_number(:adjustments__created_at), :year),
+        Sequel.as(DBUtils.year(:adjustments__created_at), :number)
+      ] }
 
       promotions_group_by_months = SpreeAdminInsights::ReportDb[adjustments_with_month_name].
-      group(:months_name).
-      order(:year, :number).
-      select{[
+        group(:months_name, :t1__year, :t1__number).
+        order(:year, :number).
+        select { [
         number,
         year,
         Sequel.as(concat(month_name, ' ', year), :months_name),
@@ -59,21 +65,22 @@ module Spree
         Sequel.as(SUM(promotion_discount) * (-1), :profit_loss),
         Sequel.as(0, :profit_loss_percent),
         Sequel.as(SUM(promotion_discount), :promotion_discount)
-      ]}
+      ] }
 
       union_stats = SpreeAdminInsights::ReportDb[group_by_months.union(promotions_group_by_months)].
-      group(:months_name).
-      order(:year, :number).
-      select{[
+        group(:months_name, :t1__year, :t1__number).
+        order(:year, :number).
+        select { [
         number,
         year,
         months_name,
         Sequel.as(SUM(sale_price), :sale_price),
         Sequel.as(SUM(cost_price), :cost_price),
         Sequel.as(SUM(profit_loss), :profit_loss),
-        Sequel.as(ROUND((SUM(profit_loss) / SUM(cost_price)) * 100, 2), :profit_loss_percent),
+        Sequel.as(ROUND((SUM(profit_loss) / NULLIF(SUM(cost_price), 0)) * 100, 2), :profit_loss_percent),
         Sequel.as(SUM(promotion_discount), :promotion_discount)
-      ]}
+      ] }
+
       fill_missing_values({ cost_price: 0, sale_price: 0, profit_loss: 0, profit_loss_percent: 0, promotion_discount: 0 }, union_stats.all)
     end
 
@@ -95,7 +102,7 @@ module Spree
     # extract it in report.rb
     def chart_data
       unless @data
-        @data = Hash.new {|h, k| h[k] = [] }
+        @data = Hash.new { |h, k| h[k] = [] }
         generate.each do |object|
           object.each_pair do |key, value|
             @data[key].push(value)
@@ -120,10 +127,10 @@ module Spree
             title: { text: 'Value($)' }
           },
           legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              borderWidth: 0
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
           },
           series: [
             {
@@ -149,10 +156,10 @@ module Spree
             title: { text: 'Percentage(%)' }
           },
           legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              borderWidth: 0
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
           },
           series: [
             {
@@ -180,10 +187,10 @@ module Spree
           },
           tooltip: { valuePrefix: '$' },
           legend: {
-              layout: 'vertical',
-              align: 'right',
-              verticalAlign: 'middle',
-              borderWidth: 0
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
           },
           series: [
             {
