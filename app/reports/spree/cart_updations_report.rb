@@ -5,7 +5,13 @@ module Spree
     SEARCH_ATTRIBUTES          = { start_date: :product_updated_from, end_date: :product_updated_to }
     SORTABLE_ATTRIBUTES        = [:product_name, :sku, :updations, :quantity_increase, :quantity_decrease]
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: {
+      template: %(
+        <a href=
+        "#{Spree::Core::Engine.routes.url_helpers.edit_admin_product_path('@@@')}"
+        target="_blank">{%# o.product_name %}</a>
+      ).sub!('@@@', '{%# o.product_slug %}')
+    }
 
     class Result < Spree::Report::Result
       class Observation < Spree::Report::Observation

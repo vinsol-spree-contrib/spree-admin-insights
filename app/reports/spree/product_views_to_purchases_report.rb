@@ -15,7 +15,13 @@ module Spree
       end
     end
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: {
+      template: %(
+        <a href=
+        "#{Spree::Core::Engine.routes.url_helpers.edit_admin_product_path('@@@')}"
+        target="_blank">{%# o.product_name %}</a>
+      ).sub!('@@@', '{%# o.product_slug %}')
+    }
 
     def report_query
       page_events_ar         = Arel::Table.new(:spree_page_events)
