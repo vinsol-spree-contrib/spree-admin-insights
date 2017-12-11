@@ -22,9 +22,8 @@ module Spree
       quantity_decrease_sql = "CASE WHEN quantity < 0 then spree_cart_events.quantity ELSE 0 END"
 
       Spree::CartEvent
-        .updated
-        .joins(:variant)
-        .joins(:product)
+        .where(activity: 'update')
+        .joins(variant: :product)
         .where(created_at: reporting_period)
         .group('product_name', 'product_slug', 'spree_variants.sku')
         .select(

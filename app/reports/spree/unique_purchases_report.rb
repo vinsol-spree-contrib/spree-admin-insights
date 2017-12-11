@@ -18,7 +18,7 @@ module Spree
     end
 
     def report_query
-      user_count_sql = '(COUNT(DISTINCT(spree_orders.user_id)) + COUNT(spree_orders.id) - COUNT(spree_orders.user_id))'
+      user_count_sql = '(COUNT(DISTINCT(spree_orders.email)))'
       purchases_by_variant =
         Spree::LineItem
           .joins(:order)

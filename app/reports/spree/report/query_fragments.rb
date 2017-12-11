@@ -7,8 +7,12 @@ module Spree::Report::QueryFragments
     Arel::SelectManager.new(Arel::Table.engine, Arel.sql("((#{ subquery1.to_sql }) as q1 JOIN (#{ subquery2.to_sql }) as q2 ON #{ join_expr })"))
   end
 
-  def self.from_union(subquery1, subquery2, as: 'results')
-    Arel::SelectManager.new(Arel::Table.engine, Arel.sql("((#{ subquery1.to_sql }) UNION (#{ subquery2.to_sql })) as #{ as }"))
+  def self.from_union(subquery1, subquery2, *subqueries, as: 'results')
+    query_sql = "(#{ subquery1.to_sql }) UNION (#{ subquery2.to_sql })"
+    subqueries.each do |subquery|
+      query_sql += " UNION (#{ subquery.to_sql })"
+    end
+    Arel::SelectManager.new(Arel::Table.engine, Arel.sql("( #{ query_sql }) as #{ as }"))
   end
 
   def self.year(column, as='year')

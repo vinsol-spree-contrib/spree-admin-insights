@@ -14,7 +14,7 @@ module Spree
 
     def report_query
       Report::QueryFragments
-        .from_union(grouped_sign_ups, grouped_visitors)
+        .from_union(grouped_sign_ups, grouped_unique_visitors, grouped_guest_users)
         .group(*time_scale_columns)
         .order(*time_scale_columns_to_s)
         .project(
@@ -39,14 +39,13 @@ module Spree
         )
     end
 
-    private def grouped_visitors
-      guest_count_sql = '(COUNT(DISTINCT(session)) - COUNT(DISTINCT(user)))'
+    private def grouped_unique_visitors
       Report::QueryFragments.from_subquery(visitors)
         .group(*time_scale_columns, 'new_sign_ups')
         .order(*time_scale_columns_to_s)
         .project(
           *time_scale_columns,
-          "#{ guest_count_sql }   as guest_users",
+          'COUNT(DISTINCT(session))   as guest_users',
           'COUNT(DISTINCT(user))  as active_users',
           '0                      as new_sign_ups'
         )
@@ -59,6 +58,28 @@ module Spree
           *time_scale_selects,
           'actor_id    as user',
           'session_id  as session'
+        )
+    end
+
+    private def grouped_guest_users
+      Report::QueryFragments.from_subquery(registered_users_visited)
+        .group(*time_scale_columns)
+        .project(
+          *time_scale_columns,
+          "-2 * COUNT(user_session) as guest_users",
+          '0 as active_users',
+          '0 as new_sign_ups'
+        )
+    end
+
+    private def registered_users_visited
+      Spree::PageEvent
+        .where(created_at: reporting_period)
+        .where.not(actor_id: nil)
+        .group(:session_id, :actor_id, *time_scale_columns)
+        .select(*time_scale_selects,
+          'session_id as user_session',
+          'actor_id as user'
         )
     end
 

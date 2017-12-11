@@ -30,11 +30,16 @@ module Spree
     end
 
     def report_query
+      users = Spree::User.arel_table
+      orders = Spree::Order.arel_table
       Spree::User
         .where(created_at: reporting_period)
         .where(Spree::User.arel_table[:email].matches(email_search))
-        .joins("LEFT JOIN spree_orders on spree_orders.user_id = spree_users.id")
-        .where(spree_orders: { completed_at: nil, number: nil })
+        .where(Spree::Order
+          .where(orders[:user_id].eq(users[:id]).and(
+            orders[:completed_at].not_eq(nil))
+          ).exists.not
+        )
         .select(
           "spree_users.email       as  user_email",
           "spree_users.created_at  as signup_date")
