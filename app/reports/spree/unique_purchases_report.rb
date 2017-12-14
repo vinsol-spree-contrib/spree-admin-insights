@@ -2,10 +2,16 @@ module Spree
   class UniquePurchasesReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :product_name
     HEADERS                    = { sku: :string, product_name: :string, sold_count: :integer, users: :integer }
-    SEARCH_ATTRIBUTES          = { start_date: :orders_completed_from, end_date: :orders_completed_till }
+    SEARCH_ATTRIBUTES          = { start_date: :orders_completed_from, end_date: :orders_completed_till, name: :name }
     SORTABLE_ATTRIBUTES        = [:product_name, :sku, :sold_count, :users]
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: {
+      template: %(
+        <a href=
+        "#{Spree::Core::Engine.routes.url_helpers.edit_admin_product_path('@@@')}"
+        target="_blank">{%# o.product_name %}</a>
+      ).sub!('@@@', '{%# o.product_slug %}')
+    }
 
     class Result < Spree::Report::Result
       class Observation < Spree::Report::Observation

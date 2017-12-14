@@ -2,7 +2,7 @@ module Spree
   class ProductViewsToPurchasesReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :product_name
     HEADERS                    = { product_name: :string, views: :integer, purchases: :integer, purchase_to_view_ratio: :integer }
-    SEARCH_ATTRIBUTES          = { start_date: :product_view_from, end_date: :product_view_till }
+    SEARCH_ATTRIBUTES          = { start_date: :product_view_from, end_date: :product_view_till, name: :name }
     SORTABLE_ATTRIBUTES        = [:product_name, :views, :purchases]
 
     class Result < Spree::Report::Result
@@ -15,7 +15,13 @@ module Spree
       end
     end
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: {
+      template: %(
+        <a href=
+        "#{Spree::Core::Engine.routes.url_helpers.edit_admin_product_path('@@@')}"
+        target="_blank">{%# o.product_name %}</a>
+      ).sub!('@@@', '{%# o.product_slug %}')
+    }
 
     def report_query
       page_events_ar         = Arel::Table.new(:spree_page_events)
