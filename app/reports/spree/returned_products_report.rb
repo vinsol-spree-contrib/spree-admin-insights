@@ -2,7 +2,7 @@ module Spree
   class ReturnedProductsReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :product_name
     HEADERS                    = { sku: :string, product_name: :string, return_count: :integer }
-    SEARCH_ATTRIBUTES          = { start_date: :product_returned_from, end_date: :product_returned_till }
+    SEARCH_ATTRIBUTES          = { start_date: :product_returned_from, end_date: :product_returned_till, name: :name }
     SORTABLE_ATTRIBUTES        = [:product_name, :sku, :return_count]
 
     deeplink product_name: {

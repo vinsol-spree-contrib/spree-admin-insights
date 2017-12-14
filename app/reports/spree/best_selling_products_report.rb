@@ -2,7 +2,7 @@ module Spree
   class BestSellingProductsReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :sold_count
     HEADERS                    = { sku: :string, product_name: :string, sold_count: :integer }
-    SEARCH_ATTRIBUTES          = { start_date: :orders_completed_from, end_date: :orders_completed_to }
+    SEARCH_ATTRIBUTES          = { start_date: :orders_completed_from, end_date: :orders_completed_to, name: :name }
     SORTABLE_ATTRIBUTES        = [:product_name, :sku, :sold_count]
 
     deeplink product_name: {

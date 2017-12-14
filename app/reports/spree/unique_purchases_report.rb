@@ -2,7 +2,7 @@ module Spree
   class UniquePurchasesReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :product_name
     HEADERS                    = { sku: :string, product_name: :string, sold_count: :integer, users: :integer }
-    SEARCH_ATTRIBUTES          = { start_date: :orders_completed_from, end_date: :orders_completed_till }
+    SEARCH_ATTRIBUTES          = { start_date: :orders_completed_from, end_date: :orders_completed_till, name: :name }
     SORTABLE_ATTRIBUTES        = [:product_name, :sku, :sold_count, :users]
 
     deeplink product_name: {

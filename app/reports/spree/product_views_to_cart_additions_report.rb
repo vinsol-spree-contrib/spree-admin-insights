@@ -2,7 +2,7 @@ module Spree
   class ProductViewsToCartAdditionsReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :product_name
     HEADERS                    = { product_name: :string, views: :integer, cart_additions: :integer, cart_to_view_ratio: :string }
-    SEARCH_ATTRIBUTES          = { start_date: :product_view_from, end_date: :product_view_till }
+    SEARCH_ATTRIBUTES          = { start_date: :product_view_from, end_date: :product_view_till, name: :name }
     SORTABLE_ATTRIBUTES        = [:product_name, :views, :cart_additions]
 
     deeplink product_name: {
