@@ -30,7 +30,7 @@ module Spree
         end
 
         def shipping_cost_percentage
-          ((@shipping_charge.to_f * 100) / @revenue.to_f).round(2)
+          @revenue.to_f.zero? ? 0 : ((@shipping_charge.to_f * 100) / @revenue.to_f).round(2)
         end
       end
     end
