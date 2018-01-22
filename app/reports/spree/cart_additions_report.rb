@@ -19,7 +19,7 @@ module Spree
 
     def report_query
       Spree::CartEvent
-        .where(activity: 'add')
+        .added
         .joins(variant: :product)
         .where(created_at: reporting_period)
         .group('product_name', 'product_slug', 'spree_variants.sku')
