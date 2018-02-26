@@ -24,17 +24,21 @@ module Spree
     end
 
     def report_query
+      ar_orders = Arel::Table.new(:spree_orders)
+      results = Arel::Table.new(:results)
       Spree::Report::QueryFragments
         .from_subquery(all_orders_with_users)
+        .join(ar_orders)
+        .on(
+          ar_orders[:email].eq(results[:user_email]).and(
+            ar_orders[:completed_at].eq(results[:last_purchase_date])
+          )
+        )
         .project(
-          "user_email",
-          "last_purchased_order_number",
-          "last_purchase_date",
-          "COUNT(user_email) as purchase_count")
-        .group(
-          "user_email",
-          "last_purchased_order_number",
-          "last_purchase_date"
+          "results.user_email         as user_email",
+          "spree_orders.number        as last_purchased_order_number",
+          "results.last_purchase_date as last_purchase_date",
+          "results.purchased_count    as purchase_count"
         )
     end
 
@@ -46,19 +50,16 @@ module Spree
     end
 
     private def all_orders_with_users
-      Spree::User
-        .where(Spree::User.arel_table[:email].matches(email_search))
-        .joins("LEFT JOIN spree_orders on spree_orders.user_id = spree_users.id")
+      Spree::Order
+        .where(Spree::Order.arel_table[:email].matches(email_search))
         .where(spree_orders: { completed_at: reporting_period })
-        .order("spree_orders.completed_at desc")
         .select(
-          "spree_users.email          as user_email",
-          "spree_orders.number        as last_purchased_order_number",
-          "spree_orders.completed_at  as last_purchase_date"
-        ).group(
-          'user_email',
-          "spree_orders.number",
-          "spree_orders.completed_at"
+          "spree_orders.email             as user_email",
+          "max(spree_orders.completed_at) as last_purchase_date",
+          "count(spree_orders.email)      as purchased_count"
+        )
+        .group(
+          "user_email"
         )
     end
 

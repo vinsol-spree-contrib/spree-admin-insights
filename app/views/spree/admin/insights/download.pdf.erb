@@ -18,7 +18,7 @@
   <tbody>
     <% @report.observations.each do |stat| %>
       <tr>
-        <% @report.headers.each do |head|%>
+        <% @report.headers.each do |head| %>
           <td><%= stat.public_send(head[:value]) %></td>
         <% end %>
       </tr>

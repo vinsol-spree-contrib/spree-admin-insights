@@ -48,10 +48,10 @@ module Spree
 
     private def tax_adjustments
       Spree::TaxRate
-        .joins(:adjustments)
+        .joins(adjustments: :order)
         .joins(:zone)
         .where(spree_adjustments: { adjustable_type: 'Spree::LineItem' } )
-        .where(spree_adjustments: { created_at: reporting_period })
+        .where(spree_orders: { completed_at: reporting_period })
         .select(
           'spree_adjustments.amount  as sales_tax',
           'spree_zones.id            as zone_id',

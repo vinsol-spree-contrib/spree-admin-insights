@@ -1,7 +1,7 @@
 module Spree
   class PaymentMethodTransactionsConversionRateReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :payment_method_name
-    HEADERS                    = { payment_method_name: :string, payment_state: :string, months_name: :string, count: :integer }
+    HEADERS                    = { payment_method_name: :string, payment_state: :string, month_name: :string, count: :integer }
     SEARCH_ATTRIBUTES          = { start_date: :payments_created_from, end_date: :payments_created_to }
     SORTABLE_ATTRIBUTES        = [:payment_method_name, :successful_payments_count, :failed_payments_count, :pending_payments_count, :invalid_payments_count]
 

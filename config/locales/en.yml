@@ -10,10 +10,6 @@ en:
     promotion_analysis: Promotion Analysis
     trending_search_analysis: Trending Search Analysis
     user_analysis: User Analysis
-    user_pool:
-      new_sign_ups: New users
-      active_users: Active Users(Registered)
-      guest_users: Guests
     insights: Insights
     insight:
       heading: 'Insights: %{type}'
@@ -96,7 +92,7 @@ en:
         payment_method_name: Payment Method
         title: Payment Method Transaction Conversion Rate
         description: Success/Failure rate of different payment methods
-        months_name: Month
+        month_name: Month
         payment_state: Payment State
         count: Count
       promotional_cost:

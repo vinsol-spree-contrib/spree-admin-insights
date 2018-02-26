@@ -20,8 +20,7 @@ module Spree
     def report_query
       Spree::CartEvent
         .removed
-        .joins(:variant)
-        .joins(:product)
+        .joins(variant: :product)
         .where(created_at: reporting_period)
         .group('product_name', 'product_slug', 'spree_variants.sku')
         .select(

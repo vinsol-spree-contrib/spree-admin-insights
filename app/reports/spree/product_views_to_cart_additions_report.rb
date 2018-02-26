@@ -21,8 +21,7 @@ module Spree
       cart_additions =
         Spree::CartEvent
           .added
-          .joins(:variant)
-          .joins(:product)
+          .joins(variant: :product)
           .where(created_at: reporting_period)
           .group('spree_products.name', 'spree_products.slug')
           .select(

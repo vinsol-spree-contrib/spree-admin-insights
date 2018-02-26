@@ -18,11 +18,7 @@ module Spree
     end
 
     def report_query
-      Spree::ReturnAuthorization
-        .joins(:return_items)
-        .joins(:inventory_units)
-        .joins(:variants)
-        .joins(:products)
+      Spree::ReturnAuthorization.joins(return_items: { inventory_unit: { variant: :product } })
         .where(spree_return_items: { created_at: reporting_period })
         .group('spree_variants.id', 'spree_products.name', 'spree_products.slug', 'spree_variants.sku')
         .select(

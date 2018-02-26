@@ -63,9 +63,9 @@ module Spree
     end
 
     private def promotion_adjustments_with_time
-      Spree::Adjustment
+      Spree::Adjustment.joins(:order)
         .promotion
-        .where(created_at: reporting_period)
+        .where(spree_orders: { completed_at: reporting_period })
         .select(
           'abs(amount) as promotion_discount',
           *time_scale_selects('spree_adjustments')
