@@ -79,8 +79,8 @@ en:
         title: User Pool
         description: To view monthly stats about type of users who visited site
         months_name: Month
-        guest_users: Guests
-        active_users: Active Users(Registered)
+        guest_users: Unique Guests
+        active_users: Unique Active Users(Registered)
         new_sign_ups: New Users
       payment_method_transactions:
         title: Payment Method Transactions Count
