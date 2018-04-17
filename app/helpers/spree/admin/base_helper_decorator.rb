@@ -8,7 +8,7 @@ Spree::BaseHelper.class_eval do
   end
 
   def page_selector_options
-    [5, 10, 15, 30, 45, 60]
+    [5, 10, 20, 30, 45, 60]
   end
 
   def pdf_logo(image_path = Spree::Config[:logo])

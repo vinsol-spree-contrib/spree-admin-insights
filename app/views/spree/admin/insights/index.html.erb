@@ -11,7 +11,7 @@
     <%= select_tag :reports, options_for_select(@reports.map { |report_name| [ Spree.t(:title, scope: [:insight, report_name]), report_name, data: { url: admin_insight_url(report_name, report_category: params[:report_category]) }] }.unshift(['Select a report', '', data: { url: admin_insights_url(report_category: params[:report_category]) }, disabled: true]), @report_name || ''), class: 'select2' %>
   </div>
 </div>
-<%= content_tag :div, class: 'hidden report-data', data: { report_data: @report_data_json } {} %>
+<%= content_tag(:div, class: 'hidden report-data', data: { report_data: @report_data_json }) {} %>
 
 <div id='report-container'>
   <div id='search-div' class='hide'>

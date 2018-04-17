@@ -7,7 +7,7 @@ This extension provides extensive and targeted reports for the Admin. Which prod
 
 Dependency
 ---------
-you need to install [spree_events_tracker](https://github.com/vinsol-spree-contrib/spree_events_tracker) gem.
+You need to install [spree_events_tracker](https://github.com/vinsol-spree-contrib/spree_events_tracker) gem.
 
 Features
 --------
@@ -30,8 +30,10 @@ Installation
 
 1. Add spree_admin_insights to your Gemfile:
 
+ #### Spree >= 3.1
+
   ```ruby
-  gem 'spree_admin_insights', git: 'https://github.com/vinsol-spree-contrib/spree-admin-insights'
+  gem 'spree_admin_insights', git: 'https://github.com/vinsol-spree-contrib/spree-admin-insights', branch: '3-1-5-backport'
   ```
 
 2. Bundle your dependencies and run the installation generator:

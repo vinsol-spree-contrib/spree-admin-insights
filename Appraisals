@@ -17,3 +17,8 @@ appraise 'spree-3-4' do
   gem 'spree', '~> 3.4.0'
   gem 'spree_events_tracker', github: 'vinsol/spree_events_tracker', branch: 'master'
 end
+
+appraise 'spree-master' do
+  gem 'spree', github: 'spree/spree', branch: 'master'
+  gem 'spree_events_tracker', github: 'vinsol/spree_events_tracker', branch: 'master'
+end

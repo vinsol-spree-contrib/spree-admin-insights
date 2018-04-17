@@ -18,6 +18,26 @@ module Spree
     end
 
     def report_query
+      if Spree.version.to_f >= 3.3
+        return query_with_inventory_unit_quantities
+      else
+        return query_without_inventory_unit_quantities
+      end
+    end
+
+    private def query_with_inventory_unit_quantities
+      Spree::ReturnAuthorization.joins(return_items: { inventory_unit: { variant: :product } })
+        .where(spree_return_items: { created_at: reporting_period })
+        .group('spree_variants.id', 'spree_products.name', 'spree_products.slug', 'spree_variants.sku')
+        .select(
+          'spree_products.name       as product_name',
+          'spree_products.slug       as product_slug',
+          'spree_variants.sku        as sku',
+          'sum(spree_inventory_units.quantity)  as return_count'
+        )
+    end
+
+    private def query_without_inventory_unit_quantities
       Spree::ReturnAuthorization.joins(return_items: { inventory_unit: { variant: :product } })
         .where(spree_return_items: { created_at: reporting_period })
         .group('spree_variants.id', 'spree_products.name', 'spree_products.slug', 'spree_variants.sku')
@@ -28,6 +48,5 @@ module Spree
           'COUNT(spree_variants.id)  as return_count'
         )
     end
-
   end
 end

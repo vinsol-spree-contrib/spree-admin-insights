@@ -113,7 +113,7 @@ module Spree
       start_date = @search[:start_date]
       @start_date = start_date.present? ? Date.parse(start_date) :  Date.current.beginning_of_year
       end_date = @search[:end_date]
-      @end_date = (end_date.present? ? Date.parse(end_date).next_day : Date.current.end_of_year)
+      @end_date = (end_date.present? ? Date.parse(end_date) : Date.current.end_of_year)
       self.reporting_period = (@start_date.beginning_of_day)..(@end_date.end_of_day)
     end
 
