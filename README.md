@@ -5,6 +5,12 @@ When it comes to driving an Ecommerce business, knowing the right metrics and ac
 
 This extension provides extensive and targeted reports for the Admin. Which products were viewed the most yesterday, which brand is most popular in a particular geography, which user is a consistent buyer and much more, all the reports a website owner could probably need are a click away!
 
+Demo
+----
+Try Spree Admin Insights with direct deployment on Heroku:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights)
+
 Dependency
 ---------
 You need to install [spree_events_tracker](https://github.com/vinsol-spree-contrib/spree_events_tracker) gem.
