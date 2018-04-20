@@ -7,17 +7,17 @@ This extension provides extensive and targeted reports for the Admin. Which prod
 
 Demo
 ----
-Try Spree Admin Insights for Spree 3-1 with direct deployment on Heroku:
+Try Spree Admin Insights for Spree master with direct deployment on Heroku:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-3-1)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-master)
 
 Try Spree Admin Insights for Spree 3-4 with direct deployment on Heroku:
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-3-4)
 
-Try Spree Admin Insights for Spree master with direct deployment on Heroku:
+Try Spree Admin Insights for Spree 3-1 with direct deployment on Heroku:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-master)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-3-1)
 
 Dependency
 ---------
