@@ -3,7 +3,7 @@ class Spree::TrendingSearchReport::FrequencyDistributionPieChart
 
   def initialize(result)
     total_occurrences = result.observations.sum(&:occurrences).to_f
-    self.chart_data = result.observations.collect { |x| { name: x.searched_term, y: x.occurrences/total_occurrences } }
+    self.chart_data = result.observations.collect { |x| { name: x.searched_term, y: x.occurrences.to_i/total_occurrences } }
   end
 
   def to_h

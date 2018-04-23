@@ -31,7 +31,7 @@ class Spree::PaymentMethodTransactionsConversionRateReport::PaymentMethodStateDi
             verticalAlign: 'middle',
             borderWidth: 0
           },
-          series: observations.group_by(&:payment_state).map { |key, value| { name: key, data: value.map(&:count) } }
+          series: observations.group_by(&:payment_state).map { |key, value| { name: key, data: value.map(&:count).map(&:to_i) } }
         }
       }
     end
