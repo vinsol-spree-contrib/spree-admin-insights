@@ -78,7 +78,7 @@ module Spree
     end
 
     def total_records
-      ActiveRecord::Base.connection.select_value(record_count_query.to_sql)
+      ActiveRecord::Base.connection.select_value(record_count_query.to_sql).to_i
     end
 
     def total_pages
