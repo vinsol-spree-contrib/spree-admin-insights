@@ -47,7 +47,7 @@ Installation
  #### Spree >= 3.1
 
   ```ruby
-  gem 'spree_admin_insights', git: 'https://github.com/vinsol-spree-contrib/spree-admin-insights', branch: '3-1-5-backport'
+  gem 'spree_admin_insights', git: 'https://github.com/vinsol-spree-contrib/spree-admin-insights', branch: 'master'
   ```
 
 2. Bundle your dependencies and run the installation generator:
