@@ -19,7 +19,7 @@ module Spree
 
     def report_query
       cart_additions =
-        Spree::CartEvent
+        Spree::ArchivedCartEvent
           .added
           .joins(variant: :product)
           .where(created_at: reporting_period)
@@ -27,7 +27,7 @@ module Spree
           .select(
             'spree_products.name              as product_name',
             'spree_products.slug              as product_slug',
-            'SUM(spree_cart_events.quantity)  as cart_additions'
+            'SUM(spree_archived_cart_events.quantity)  as cart_additions'
           )
       total_views =
         Spree::Product

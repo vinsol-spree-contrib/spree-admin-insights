@@ -18,7 +18,7 @@ module Spree
     deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
 
     def report_query
-      page_events_ar         = Arel::Table.new(:spree_page_events)
+      page_events_ar         = Arel::Table.new(:spree_archived_page_events)
       purchase_line_items_ar = Arel::Table.new(:purchase_line_items)
 
       Spree::Report::QueryFragments.from_subquery(purchase_line_items, as: :purchase_line_items)

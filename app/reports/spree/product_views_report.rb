@@ -18,14 +18,14 @@ module Spree
         Spree::Product
           .where(Spree::Product.arel_table[:name].matches(search_name))
           .joins(:page_view_events)
-          .where(spree_page_events: { created_at: reporting_period })
-          .group('product_name', 'product_slug', 'spree_page_events.actor_id', 'spree_page_events.session_id')
+          .where(spree_archived_page_events: { created_at: reporting_period })
+          .group('product_name', 'product_slug', 'spree_archived_page_events.actor_id', 'spree_archived_page_events.session_id')
           .select(
             'spree_products.name           as product_name',
             'spree_products.slug           as product_slug',
             'COUNT(*)                      as total_views_per_session',
-            'spree_page_events.session_id  as session_id',
-            'spree_page_events.actor_id    as actor_id'
+            'spree_archived_page_events.session_id  as session_id',
+            'spree_archived_page_events.actor_id    as actor_id'
           )
       Spree::Report::QueryFragments
         .from_subquery(viewed_events)

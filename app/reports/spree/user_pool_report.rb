@@ -52,7 +52,7 @@ module Spree
     end
 
     private def visitors
-      Spree::PageEvent
+      Spree::ArchivedPageEvent
         .where(created_at: reporting_period)
         .select(
           *time_scale_selects,
@@ -73,7 +73,7 @@ module Spree
     end
 
     private def registered_users_visited
-      Spree::PageEvent
+      Spree::ArchivedPageEvent
         .where(created_at: reporting_period)
         .where.not(actor_id: nil)
         .group(:session_id, :actor_id, *time_scale_columns)

@@ -18,7 +18,7 @@ module Spree
     end
 
     def report_query
-      Spree::CartEvent
+      Spree::ArchivedCartEvent
         .added
         .joins(variant: :product)
         .where(created_at: reporting_period)
@@ -28,7 +28,7 @@ module Spree
           'spree_products.slug             as product_slug',
           'spree_variants.sku              as sku',
           'count(spree_products.name)      as additions',
-          'sum(spree_cart_events.quantity) as quantity_change'
+          'sum(spree_archived_cart_events.quantity) as quantity_change'
         )
     end
   end

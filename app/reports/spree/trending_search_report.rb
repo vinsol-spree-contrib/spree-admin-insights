@@ -36,10 +36,10 @@ module Spree
     end
 
     private def searches
-      Spree::PageEvent
+      Spree::ArchivedPageEvent
         .where(activity: 'search')
         .where(created_at: reporting_period)
-        .where(Spree::PageEvent.arel_table[:search_keywords].matches(keyword_search))
+        .where(Spree::ArchivedPageEvent.arel_table[:search_keywords].matches(keyword_search))
         .select("search_keywords as searched_term")
     end
 
