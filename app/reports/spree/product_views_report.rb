@@ -17,15 +17,15 @@ module Spree
       viewed_events =
         Spree::Product
           .where(Spree::Product.arel_table[:name].matches(search_name))
-          .joins(:page_view_events)
-          .where(spree_archived_page_events: { created_at: reporting_period })
-          .group('product_name', 'product_slug', 'spree_archived_page_events.actor_id', 'spree_archived_page_events.session_id')
+          .joins(event_scope)
+          .where(report_source_table.to_sym => { created_at: reporting_period })
+          .group('product_name', 'product_slug', "#{report_source_table}.actor_id", "#{report_source_table}.session_id")
           .select(
             'spree_products.name           as product_name',
             'spree_products.slug           as product_slug',
             'COUNT(*)                      as total_views_per_session',
-            'spree_archived_page_events.session_id  as session_id',
-            'spree_archived_page_events.actor_id    as actor_id'
+            "#{report_source_table}.session_id  as session_id",
+            "#{report_source_table}.actor_id    as actor_id"
           )
       Spree::Report::QueryFragments
         .from_subquery(viewed_events)
@@ -42,5 +42,14 @@ module Spree
     private def search_name
       search[:name].present? ? "%#{ search[:name] }%" : '%'
     end
+
+    private def report_source_table
+      Spree::Config.events_tracker_archive_data ? 'spree_archived_page_events' : 'spree_page_events'
+    end
+
+    private def event_scope
+      Spree::Config.events_tracker_archive_data ? :archived_page_view_events : :page_view_events
+    end
+
   end
 end
