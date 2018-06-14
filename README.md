@@ -5,23 +5,27 @@ When it comes to driving an Ecommerce business, knowing the right metrics and ac
 
 This extension provides extensive and targeted reports for the Admin. Which products were viewed the most yesterday, which brand is most popular in a particular geography, which user is a consistent buyer and much more, all the reports a website owner could probably need are a click away!
 
+Data Archival
+-------------
+Activity tracking continuously updates the data.  
+
+Generating reports from the continuously updated data can severely downgrade the performance.  
+
+So, we periodically archive our data, and generate reports from the archived data, thereby, improving the overall performance.
+
 Demo
 ----
 Try Spree Admin Insights for Spree master with direct deployment on Heroku:
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-master)
-
-Try Spree Admin Insights for Spree 3-4 with direct deployment on Heroku:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-3-4)
-
-Try Spree Admin Insights for Spree 3-1 with direct deployment on Heroku:
-
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-3-1)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/vinsol-spree-contrib/spree-demo-heroku/tree/spree-admin-insights-data-archival)
 
 Dependency
 ---------
-You need to install [spree_events_tracker](https://github.com/vinsol-spree-contrib/spree_events_tracker) gem.
+You need to install [spree_events_tracker](https://github.com/vinsol-spree-contrib/spree_events_tracker/tree/data_archival) gem.
+
+```ruby
+  gem 'spree_events_tracker', github: 'vinsol-spree-contrib/spree_events_tracker', branch: 'data_archival'
+```
 
 Features
 --------
