@@ -7,11 +7,8 @@ This extension provides extensive and targeted reports for the Admin. Which prod
 
 Data Archival
 -------------
-Activity tracking continuously updates the data.  
 
-Generating reports from the continuously updated data can severely downgrade the performance.  
-
-So, we periodically archive our data, and generate reports from the archived data, thereby, improving the overall performance.
+This branch is compatible with the data archival process of [spree_events_tracker](https://github.com/vinsol-spree-contrib/spree_events_tracker/tree/data_archival)
 
 Demo
 ----
