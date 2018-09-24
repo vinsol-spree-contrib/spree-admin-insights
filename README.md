@@ -75,6 +75,12 @@ bundle
 bundle exec rspec spec
 ```
 
+## See It In Action
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=9D4e2xVibIM
+" target="_blank"><img src="http://img.youtube.com/vi/9D4e2xVibIM/0.jpg" 
+alt="Youtube Video Tutorial" /></a>
+
 Credits
 -------
 
