@@ -36,15 +36,20 @@ module Spree
     end
 
     private def searches
-      Spree::PageEvent
+      report_source
         .where(activity: 'search')
         .where(created_at: reporting_period)
-        .where(Spree::PageEvent.arel_table[:search_keywords].matches(keyword_search))
+        .where(report_source.arel_table[:search_keywords].matches(keyword_search))
         .select("search_keywords as searched_term")
     end
 
     private def keyword_search
       search[:keywords_cont].present? ? "%#{ search[:keywords_cont] }%" : '%'
     end
+
+    private def report_source
+      Spree::Config.events_tracker_archive_data ? Spree::ArchivedPageEvent : Spree::PageEvent
+    end
+
   end
 end

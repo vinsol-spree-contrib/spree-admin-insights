@@ -18,10 +18,10 @@ module Spree
     end
 
     def report_query
-      quantity_increase_sql = "CASE WHEN quantity > 0 then spree_cart_events.quantity ELSE 0 END"
-      quantity_decrease_sql = "CASE WHEN quantity < 0 then spree_cart_events.quantity ELSE 0 END"
+      quantity_increase_sql = "CASE WHEN quantity > 0 then #{report_source_table}.quantity ELSE 0 END"
+      quantity_decrease_sql = "CASE WHEN quantity < 0 then #{report_source_table}.quantity ELSE 0 END"
 
-      Spree::CartEvent
+      report_source
         .updated
         .joins(variant: :product)
         .where(created_at: reporting_period)
@@ -35,5 +35,14 @@ module Spree
           "SUM(#{ quantity_decrease_sql })  as quantity_decrease"
         )
     end
+
+    private def report_source
+      Spree::Config.events_tracker_archive_data ? Spree::ArchivedCartEvent : Spree::CartEvent
+    end
+
+    private def report_source_table
+      Spree::Config.events_tracker_archive_data ? 'spree_archived_cart_events' : 'spree_cart_events'
+    end
+    
   end
 end
