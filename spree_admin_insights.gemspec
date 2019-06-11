@@ -35,6 +35,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'shoulda-matchers'
-  s.add_dependency 'wicked_pdf'
+  # Temporary fix until wicked_pdf v2 release
+  # https://github.com/mileszs/wicked_pdf/issues/823
+  s.add_dependency 'wicked_pdf', '1.1.0'
   s.add_dependency 'wkhtmltopdf-binary'
 end
