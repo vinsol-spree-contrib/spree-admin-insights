@@ -1,16 +1,17 @@
 <% if can? :admin, Spree::Admin::InsightsController %>
-  <ul class="nav nav-sidebar">
-    <li class="sidebar-menu-item">
-      <a data-toggle="collapse" data-parent="#sidebar" href="#sidebar-insights">
-        <span class="icon icon-stats"></span>
+  <ul class="nav nav-sidebar border-bottom">
+    <li class="sidebar-menu-item d-block w-100">
+      <a data-toggle="collapse" href="#sidebar-insights" aria-expanded="false" class="d-flex w-100 p-3 position-relative align-items-center">
+        <span class="icon icon-stats mr-2"></span>
         <span class="text"> <%= Spree.t(:tab_heading, scope: :insight) %></span>
-        <span class="icon icon-chevron-left pull-right"></span>
+        <span class="icon icon-chevron-left position-absolute"></span>
       </a>
-      <ul data-hook="admin_configurations_sidebar_menu" class="collapse nav nav-pills nav-stacked" id="sidebar-insights">
+      <ul data-hook="admin_configurations_sidebar_menu" class="border-top bg-white nav nav-pills nav-stacked collapse list-unstyled" id="sidebar-insights">
         <% Spree::ReportGenerationService.reports.each do |_key, _value| %>
-          <li class="sidebar-menu-item <%= (selected?(params[:report_category], _key) ? 'selected' : '') %>"><%= link_to Spree.t(_key), admin_insight_path(report_category: _key, id: _value.first)  %></li>
+          <li class="sidebar-menu-item d-block w-100 <%= (selected?(params[:report_category], _key) ? 'selected' : '') %>"><%= link_to Spree.t(_key), admin_insight_path(report_category: _key, id: _value.first), class: "py-1 px-3 d-block sidebar-submenu-item #{(selected?(params[:report_category], _key) ? 'text-success' : '')}" %> </li>
         <% end %>
       </ul>
     </li>
   </ul>
 <% end %>
+

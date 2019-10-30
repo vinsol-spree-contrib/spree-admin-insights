@@ -38,34 +38,34 @@
 
   <%= render 'chart' %>
 
-  <div id="table-helpers" class="row pull-right hide">
+  <div id="table-helpers" class="row float-right hide">
     <span id="page-selector">
-      <span class="select-box-slide pull-right">
-        <%= select_tag :per_page, options_for_select(page_selector_options, params[:per_page] || Spree::Config[:records_per_page]), class: 'form-control text-right pull-right page-select' %>
+      <span class="select-box-slide float-right">
+        <%= select_tag :per_page, options_for_select(page_selector_options, params[:per_page] || 25), class: 'form-control text-right float-right page-select' %>
       </span>
-      <span title="apply pagination" class="col-md-2 hide pull-right">
+      <span title="apply pagination" class="col-md-2 hide float-right">
         <%= link_to '#', class: 'btn btn-default', id: 'apply-pagination' do %>
           <span class="glyphicon glyphicon-eye-open"></span>
         <% end %>
       </span>
-      <span title="remove pagination" class="col-md-2 pull-right">
+      <span title="remove pagination" class="col-md-2 float-right">
         <%= link_to '#', class: 'btn btn-default', id: 'remove-pagination' do %>
           <span class="glyphicon glyphicon-eye-close"></span>
         <% end %>
       </span>
     </span>
     <span id='page-helpers'>
-      <span title="reset" class="col-md-2 pull-right">
+      <span title="reset" class="col-md-2 float-right">
         <%= link_to '#', class: 'btn btn-default', id: 'reset' do %>
           <span  class="glyphicon glyphicon-repeat"></span>
         <% end %>
       </span>
-      <span title="refresh" class="col-md-2 pull-right">
+      <span title="refresh" class="col-md-2 float-right">
         <%= link_to '#', class: 'btn btn-default', id: 'refresh' do %>
           <span class="glyphicon glyphicon-refresh"></span>
         <% end %>
       </span>
-      <span title="download" class="col-md-2 pull-right">
+      <span title="download" class="col-md-2 float-right">
         <%= link_to '#', class: "btn btn-default dropdown-toggle", data: { toggle: 'dropdown' } do %>
           <span class="glyphicon glyphicon-download"></span>
         <% end %>
