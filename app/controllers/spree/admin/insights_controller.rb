@@ -103,8 +103,8 @@ module Spree
           @pagination_hash = { paginate: false }
           unless params[:paginate] == 'false'
             @pagination_hash[:paginate] = true
-            @pagination_hash[:records_per_page] = params[:per_page].try(:to_i) || Spree::Config[:records_per_page]
-            @pagination_hash[:offset] = params[:page].to_i * @pagination_hash[:records_per_page]
+            @pagination_hash[:records_per_page] = params[:per_page].try(:to_i) || 25
+            @pagination_hash[:offset] = (params[:page].to_i || 1) * @pagination_hash[:records_per_page]
           end
         end
     end
