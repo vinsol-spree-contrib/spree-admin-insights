@@ -38,7 +38,7 @@ module Spree
         .where(Spree::Order
           .where(orders[:user_id].eq(users[:id]).and(
             orders[:completed_at].not_eq(nil))
-          ).exists.not
+          ).arel.exists.not
         )
         .select(
           "spree_users.email       as  user_email",

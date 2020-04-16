@@ -22,13 +22,13 @@ Searcher.prototype.refreshSearcher = function($selectedInsight, data) {
   var requestPath = $selectedInsight.data('url'),
     _this = this;
 
-  _this.$filters.removeClass('hide');
+  _this.$filters.removeClass('d-none');
   _this.addSearchForm(data);
   _this.setFormActions(_this.$quickSearchForm, requestPath);
   _this.setFormActions(_this.$filterForm, requestPath);
 
   _this.$filterForm.on('submit', function() {
-   var paginated = !_this.reportLoader.removePaginationButton.closest('span').hasClass('hide');
+   var paginated = !_this.reportLoader.removePaginationButton.closest('span').hasClass('d-none');
    _this.addSearchStatus();
    $.ajax({
      type: "GET",
