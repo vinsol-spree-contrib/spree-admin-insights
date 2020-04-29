@@ -90,6 +90,7 @@ module Spree
 
     private def order_with_line_items
       line_item_ar = Spree::LineItem.arel_table
+      zero = Arel::Nodes.build_quoted(0.0)
       Spree::Order
         .where.not(completed_at: nil)
         .where(created_at: reporting_period)
@@ -98,8 +99,8 @@ module Spree
         .select(
           *time_scale_selects('spree_orders'),
           "spree_orders.item_total as sale_price",
-          "SUM(#{ Spree::Report::QueryFragments.if_null(line_item_ar[:cost_price], line_item_ar[:price]).to_sql } * spree_line_items.quantity) as cost_price",
-          "(spree_orders.item_total - SUM(#{ Spree::Report::QueryFragments.if_null(line_item_ar[:cost_price], line_item_ar[:price]).to_sql } * spree_line_items.quantity)) as profit_loss"
+          "SUM(#{ Spree::Report::QueryFragments.if_null(line_item_ar[:cost_price], zero).to_sql } * spree_line_items.quantity) as cost_price",
+          "(spree_orders.item_total - SUM(#{ Spree::Report::QueryFragments.if_null(line_item_ar[:cost_price], zero).to_sql } * spree_line_items.quantity)) as profit_loss"
         )
     end
 

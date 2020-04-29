@@ -11,7 +11,7 @@ TableSorter.prototype.bindEvents = function() {
   this.$insightsTableList.on('click', '#admin-insight .sortable-link', function() {
     event.preventDefault();
     var currentPage = _this.paginatorDiv.find('li.active a').html() - 1,
-      paginated = !_this.reportLoader.removePaginationButton.closest('span').hasClass('hide'),
+      paginated = !_this.reportLoader.removePaginationButton.closest('span').hasClass('d-none'),
       requestPath = $(event.target).attr('href') + '&' + $('#filter-search').serialize() + '&page=' + currentPage + "&per_page=" + _this.reportLoader.pageSelector.find(':selected').attr('value') + '&paginate=' + paginated;
     _this.reportLoader.requestUrl = requestPath;
 

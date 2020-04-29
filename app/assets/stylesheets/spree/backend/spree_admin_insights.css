@@ -7,6 +7,8 @@ the installer will append this file to the app vendored assets here: 'vendor/ass
   padding: 0px 6px 0px 6px;
 }
 
+.btn.border:hover {background-color: #e7e7e7;}
+
 #report-container .filter-well {
   margin: 5px 0px 10px 0px;
 }

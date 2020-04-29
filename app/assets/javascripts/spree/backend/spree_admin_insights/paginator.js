@@ -33,8 +33,8 @@ Paginator.prototype.bindEvents = function () {
 };
 
 Paginator.prototype.togglePaginatorButtons = function(firstButton, secondButton) {
-  firstButton.closest('span').removeClass('hide');
-  secondButton.closest('span').addClass('hide');
+  firstButton.closest('span').removeClass('d-none');
+  secondButton.closest('span').addClass('d-none');
 };
 
 Paginator.prototype.refreshPaginator = function(data) {
@@ -115,7 +115,7 @@ Paginator.prototype.applyPagination = function(currentElement) {
       requestUrl = $element.data('url') + '&sort%5Battribute%5D=' + attribute + '&sort%5Btype%5D=' + sortOrder + '&' + $('#filter-search').serialize();
   $(currentElement).attr('href', requestUrl);
   _this.reportLoader.requestUrl = requestUrl;
-  $element.val('5');
+  $element.val('20');
   $.ajax({
     type: 'GET',
     url: requestUrl,
