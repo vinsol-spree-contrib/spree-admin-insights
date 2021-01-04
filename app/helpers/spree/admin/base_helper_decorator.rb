@@ -16,4 +16,5 @@ module Spree::Admin::BaseHelperDecorator
   end
 end
 
+::Spree::BaseHelper.prepend(Spree::Admin::BaseHelperDecorator)
 ::Spree::Admin::BaseHelper.prepend(Spree::Admin::BaseHelperDecorator)
