@@ -76,15 +76,15 @@
           <li><%= link_to 'PDF', admin_insights_download_path(format: 'pdf'), class: 'download-link', data: { url: admin_insights_download_path(format: 'pdf') }%></li>
         </ul>
       </span>
-    </div>
+    </span>
   </div>
+</div>
 
   <div id='report-div'>
   </div>
 
   <div id='paginator-div'>
   </div>
-</div>
 
 <%= render partial: 'spree/admin/templates/insights/show', formats: [:template] %>
 <%= render partial: 'spree/admin/templates/insights/paginator', formats: [:template] %>
