@@ -1,3 +1,7 @@
-Spree::User.class_eval do
-  has_many :spree_orders, class_name: 'Spree::Order'
+module Spree::UserDecorator
+  def self.prepend(base)
+    has_many :spree_orders, class_name: 'Spree::Order'
+  end
 end
+
+::Spree::User.prepend(Spree::UserDecorator)
