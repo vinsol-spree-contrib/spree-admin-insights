@@ -1,4 +1,4 @@
-Spree::BaseHelper.class_eval do
+module Spree::Admin::BaseHelperDecorator
   def selected?(current_insight, insight)
     current_insight.eql?(insight)
   end
@@ -15,3 +15,5 @@ Spree::BaseHelper.class_eval do
     wicked_pdf_image_tag image_path, class: 'logo'
   end
 end
+
+::Spree::Admin::BaseHelper.prepend(Spree::Admin::BaseHelperDecorator)

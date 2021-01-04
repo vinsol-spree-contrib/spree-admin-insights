@@ -1,6 +1,6 @@
 module Spree::UserDecorator
   def self.prepend(base)
-    has_many :spree_orders, class_name: 'Spree::Order'
+    base.has_many :spree_orders, class_name: 'Spree::Order'
   end
 end
 

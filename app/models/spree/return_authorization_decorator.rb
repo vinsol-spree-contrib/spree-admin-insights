@@ -1,7 +1,7 @@
 module Spree::ReturnAuthorizationDecorator
   def self.prepend(base)
-    has_many :variants, through: :inventory_units
-    has_many :products, through: :variants
+    base.has_many :variants, through: :inventory_units
+    base.has_many :products, through: :variants
   end
 end
 
