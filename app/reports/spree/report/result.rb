@@ -1,7 +1,7 @@
 module Spree
   class Report
     class Result
-      attr_accessor :start_date, :end_date, :time_scale, :report
+      attr_accessor :start_date, :end_date, :time_scale, :report, :name
       attr_reader   :observations
 
       def initialize

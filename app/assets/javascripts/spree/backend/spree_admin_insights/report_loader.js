@@ -89,7 +89,7 @@ ReportLoader.prototype.resetFilters = function(event) {
   this.loadChart($element);
   this.searcherObject.clearSearchFields();
 };
-
+ 
 ReportLoader.prototype.refreshPage = function(event) {
   event.preventDefault();
   var $element = $(event.target);
@@ -111,6 +111,7 @@ ReportLoader.prototype.bindPopStateEventCallback = function() {
 
 ReportLoader.prototype.loadChart = function($selectedOption) {
   var requestPath = $selectedOption.data('url');
+  this.searcherObject.clearSearchFields();
   this.fetchChartData(requestPath, $selectedOption);
 };
 

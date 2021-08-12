@@ -1,7 +1,7 @@
 module Spree
   class SalesTaxReport < Spree::Report
     HEADERS             = { zone_name: :string, sales_tax: :integer }
-    SEARCH_ATTRIBUTES   = { start_date: :taxation_from, end_date: :taxation_till }
+    SEARCH_ATTRIBUTES   = { start_date: :taxation_from, end_date: :taxation_till, name: :zone_name }
     SORTABLE_ATTRIBUTES = []
 
     class Result < Spree::Report::TimedResult
@@ -33,7 +33,6 @@ module Spree
       end
     end
 
-
     def report_query
       Spree::Report::QueryFragments
         .from_subquery(tax_adjustments)
@@ -52,6 +51,7 @@ module Spree
         .joins(:zone)
         .where(spree_adjustments: { adjustable_type: 'Spree::LineItem' } )
         .where(spree_orders: { completed_at: reporting_period })
+        .where(Spree::Zone.arel_table[:name].matches(search_name))
         .select(
           'spree_adjustments.amount  as sales_tax',
           'spree_zones.id            as zone_id',

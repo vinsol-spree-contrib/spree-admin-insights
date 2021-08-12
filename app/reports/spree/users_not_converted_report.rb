@@ -2,7 +2,7 @@ module Spree
   class UsersNotConvertedReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :user_email
     HEADERS                    = { user_email: :string, signup_date: :date }
-    SEARCH_ATTRIBUTES          = { start_date: :users_created_from, end_date: :users_created_till, email_cont: :email }
+    SEARCH_ATTRIBUTES          = { start_date: :users_created_from, end_date: :users_created_till, email_cont: :user_email }
     SORTABLE_ATTRIBUTES        = [:user_email, :signup_date]
 
     def paginated?
@@ -35,10 +35,10 @@ module Spree
       Spree::User
         .where(created_at: reporting_period)
         .where(Spree::User.arel_table[:email].matches(email_search))
-        .where(Spree::Order
+        .where('NOT EXISTS (?)', Spree::Order
           .where(orders[:user_id].eq(users[:id]).and(
             orders[:completed_at].not_eq(nil))
-          ).exists.not
+          )
         )
         .select(
           "spree_users.email       as  user_email",

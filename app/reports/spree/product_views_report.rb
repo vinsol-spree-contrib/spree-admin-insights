@@ -5,7 +5,7 @@ module Spree
     SEARCH_ATTRIBUTES = { start_date: :product_view_from, end_date: :product_view_till, name: :name}
     SORTABLE_ATTRIBUTES = [:product_name, :views, :users, :guest_sessions]
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: { template: %Q{<a href="/store/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
 
     class Result < Spree::Report::Result
       class Observation < Spree::Report::Observation
@@ -39,8 +39,5 @@ module Spree
         )
     end
 
-    private def search_name
-      search[:name].present? ? "%#{ search[:name] }%" : '%'
-    end
   end
 end

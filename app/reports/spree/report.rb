@@ -2,7 +2,7 @@ module Spree
   class Report
 
     attr_accessor :sortable_attribute, :sortable_type, :total_records,
-                  :records_per_page, :current_page, :paginate, :search, :reporting_period
+                  :records_per_page, :current_page, :paginate, :search, :reporting_period, :search_name
     alias_method  :sort_direction, :sortable_type
     alias_method  :paginate?, :paginate
 
@@ -38,7 +38,6 @@ module Spree
       end
     end
 
-
     def initialize(options)
       self.search = options.fetch(:search, {})
       self.records_per_page = options[:records_per_page]
@@ -46,6 +45,7 @@ module Spree
       self.paginate = options[:paginate]
       extract_reporting_period
       determine_report_time_scale
+      extract_search_name
       if self.class::SORTABLE_ATTRIBUTES.present?
         set_sortable_attributes(options, self.class::DEFAULT_SORTABLE_ATTRIBUTE)
       end
@@ -115,6 +115,11 @@ module Spree
       end_date = @search[:end_date]
       @end_date = (end_date.present? ? Date.parse(end_date) : Date.current.end_of_year)
       self.reporting_period = (@start_date.beginning_of_day)..(@end_date.end_of_day)
+    end
+
+    private def extract_search_name
+      @name = search[:name].present? ? "%#{ search[:name] }%" : '%'
+      self.search_name = @name
     end
 
     private def determine_report_time_scale

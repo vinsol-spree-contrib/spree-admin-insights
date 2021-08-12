@@ -1,7 +1,7 @@
 module Spree
   class ShippingCostReport < Spree::Report
     HEADERS             = { name: :string, shipping_charge: :integer, revenue: :integer, shipping_cost_percentage: :integer }
-    SEARCH_ATTRIBUTES   = { start_date: :start_date, end_date: :end_date }
+    SEARCH_ATTRIBUTES   = { start_date: :start_date, end_date: :end_date, name: :name }
     SORTABLE_ATTRIBUTES = []
 
     class Result < Spree::Report::TimedResult
@@ -42,6 +42,7 @@ module Spree
       Spree::Report::QueryFragments
         .from_subquery(shipment_with_rates, as: 'shipment_with_rates')
         .join(ar_shipping_methods)
+        .where(Spree::ShippingMethod.arel_table[:name].matches(search_name))
         .on(ar_shipping_methods[:id].eq(ar_subquery_with_rates[:shipping_method_id]))
         .project(
           *time_scale_columns,

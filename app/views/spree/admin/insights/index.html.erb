@@ -8,23 +8,23 @@
 
 <div id='insights-div' class='container-fluid' >
   <div class="row">
-    <%= select_tag :reports, options_for_select(@reports.map { |report_name| [ Spree.t(:title, scope: [:insight, report_name]), report_name, data: { url: admin_insight_url(report_name, report_category: params[:report_category]) }] }.unshift(['Select a report', '', data: { url: admin_insights_url(report_category: params[:report_category]) }, disabled: true]), @report_name || ''), class: 'select2' %>
+    <%= select_tag :reports, options_for_select(@reports.map { |report_name| [ Spree.t(:title, scope: [:insight, report_name]), report_name, data: { url: admin_insight_url(report_name, report_category: params[:report_category]) }] }.unshift(['Select a report', '', data: { url: admin_insights_url(report_category: params[:report_category]) }, disabled: true]), @report_name || ''), class: 'select2', style: "width: 100%" %>
   </div>
 </div>
 <%= content_tag(:div, class: 'hidden report-data', data: { report_data: @report_data_json }) {} %>
 
 <div id='report-container'>
   <div id='search-div' class='hide'>
-    <div class="filter-wrap row">
-      <div class="col-sm-12">
+    <div class="filter-wrap row mb-4">
+      <div class="col-12">
         <div class="input-group index-filter-button">
           <span class="input-group-btn">
-            <button class="btn btn-default js-show-index-filters" type="button">
+            <button class="btn js-show-index-filters m-0" type="button">
               <span class="icon icon-chevron-right"></span>
               <%= Spree.t(:filter) %>
             </button>
           </span>
-          <%= form_tag form_action(@report_name, params[:report_category]), id: "quick-search" do %>
+          <%= form_tag form_action(@report_name, params[:report_category]), id: "quick-search", class: "flex-grow-1" do %>
             <%= text_field_tag :quick_search, nil, class: "form-control js-quick-search", placeholder: Spree.t(:quick_search) %>
           <% end %>
         </div>
@@ -38,10 +38,10 @@
 
   <%= render 'chart' %>
 
-  <div id="table-helpers" class="row pull-right hide">
-    <span id="page-selector">
+  <div id="table-helpers" class="row pull-right hide justify-content-between">
+    <div id="page-selector">
       <span class="select-box-slide pull-right">
-        <%= select_tag :per_page, options_for_select(page_selector_options, params[:per_page] || Spree::Config[:records_per_page]), class: 'form-control text-right pull-right page-select' %>
+        <%= select_tag :per_page, options_for_select(page_selector_options, params[:per_page] || SpilloverStore::Config[:records_per_page]), class: 'form-control text-right pull-right page-select' %>
       </span>
       <span title="apply pagination" class="col-md-2 hide pull-right">
         <%= link_to '#', class: 'btn btn-default', id: 'apply-pagination' do %>
@@ -53,7 +53,7 @@
           <span class="glyphicon glyphicon-eye-close"></span>
         <% end %>
       </span>
-    </span>
+    </div>
     <span id='page-helpers'>
       <span title="reset" class="col-md-2 pull-right">
         <%= link_to '#', class: 'btn btn-default', id: 'reset' do %>
@@ -70,10 +70,9 @@
           <span class="glyphicon glyphicon-download"></span>
         <% end %>
         <ul class="dropdown-menu">
-          <li><%= link_to 'CSV', admin_insights_download_path(format: 'csv'), class: 'download-link', data: { url: admin_insights_download_path(format: 'csv') } %></li>
-          <li><%= link_to 'Excel', admin_insights_download_path(format: 'xls'), class: 'download-link',  data: { url: admin_insights_download_path(format: 'xls') }%></li>
-          <li><%= link_to 'Text', admin_insights_download_path(format: 'text'), class: 'download-link',  data: { url: admin_insights_download_path(format: 'text') }%></li>
-          <li><%= link_to 'PDF', admin_insights_download_path(format: 'pdf'), class: 'download-link', data: { url: admin_insights_download_path(format: 'pdf') }%></li>
+          <li><%= link_to 'CSV', admin_insights_download_path(request.parameters.merge({format: 'csv'})), class: 'download-link', data: { url: admin_insights_download_path(format: 'csv') } %></li>
+          <li><%= link_to 'Excel', admin_insights_download_path(request.parameters.merge({format: 'xml'})), class: 'download-link',  data: { url: admin_insights_download_path(format: 'xls') }%></li>
+          <li><%= link_to 'Text', admin_insights_download_path(request.parameters.merge({format: 'text'})), class: 'download-link',  data: { url: admin_insights_download_path(format: 'text') }%></li>
         </ul>
       </span>
     </div>

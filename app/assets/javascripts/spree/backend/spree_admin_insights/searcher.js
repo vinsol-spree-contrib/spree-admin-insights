@@ -63,7 +63,7 @@ Searcher.prototype.addSearchStatus = function () {
       }
 
       label = label.text() + ': ' + ransack_value;
-      filter = '<span class="js-filter label label-default" data-ransack-field="' + ransack_field + '">' + label + '<span class="icon icon-delete js-delete-filter"></span></span>';
+      filter = '<span class="js-filter badge badge-secondary" data-ransack-field="' + ransack_field + '">' + label + '<i class="icon icon-cancel ml-2 js-delete-filter"></i></span>';
 
       filtersContainer.append(filter).show();
     }
@@ -73,7 +73,6 @@ Searcher.prototype.addSearchStatus = function () {
 Searcher.prototype.addSearchForm = function(data) {
   this.$filters.find('#table-filter').empty().append($(tmpl('search-tmpl', data)));
   this.$filterForm = this.$filters.find('#filter-search');
-  this.$filters.find('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
 };
 
 Searcher.prototype.setFormActions = function($form, path) {

@@ -2,10 +2,10 @@ module Spree
   class ProductViewsToCartAdditionsReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :product_name
     HEADERS                    = { product_name: :string, views: :integer, cart_additions: :integer, cart_to_view_ratio: :string }
-    SEARCH_ATTRIBUTES          = { start_date: :product_view_from, end_date: :product_view_till }
+    SEARCH_ATTRIBUTES          = { start_date: :product_view_from, end_date: :product_view_till, name: :product_name  }
     SORTABLE_ATTRIBUTES        = [:product_name, :views, :cart_additions]
 
-    deeplink product_name: { template: %Q{<a href="/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
+    deeplink product_name: { template: %Q{<a href="/store/admin/products/{%# o.product_slug %}" target="_blank">{%# o.product_name %}</a>} }
 
     class Result < Spree::Report::Result
       class Observation < Spree::Report::Observation
@@ -23,6 +23,7 @@ module Spree
           .added
           .joins(variant: :product)
           .where(created_at: reporting_period)
+          .where(Spree::Product.arel_table[:name].matches(search_name))
           .group('spree_products.name', 'spree_products.slug')
           .select(
             'spree_products.name              as product_name',

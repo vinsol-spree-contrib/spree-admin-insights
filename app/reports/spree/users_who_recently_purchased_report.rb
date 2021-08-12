@@ -1,9 +1,11 @@
 module Spree
   class UsersWhoRecentlyPurchasedReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :user_email
-    HEADERS                    = { user_email: :string, purchase_count: :integer, last_purchase_date: :date, last_purchased_order_number: :string }
+    HEADERS                    = { user_email: :string, purchase_count: :integer, total_purchased: :decimal, last_purchase_date: :date, last_purchased_order_number: :string }
     SEARCH_ATTRIBUTES          = { start_date: :start_date, end_date: :end_date, email_cont: :email }
-    SORTABLE_ATTRIBUTES        = [:user_email, :purchase_count, :last_purchase_date]
+    SORTABLE_ATTRIBUTES        = [:user_email, :purchase_count, :last_purchase_date, :total_purchased]
+
+    deeplink last_purchased_order_number: { template: %Q{<a href="/store/admin/orders/{%# o.last_purchased_order_number %}/edit" target="_blank">{%# o.last_purchased_order_number %}</a>} }
 
     def paginated?
       true
@@ -11,7 +13,7 @@ module Spree
 
     class Result < Spree::Report::Result
       class Observation < Spree::Report::Observation
-        observation_fields [:user_email, :last_purchased_order_number, :last_purchase_date, :purchase_count]
+        observation_fields [:user_email, :last_purchased_order_number, :last_purchase_date, :purchase_count, :total_purchased]
 
         def last_purchase_date
           @last_purchase_date.to_date.strftime("%B %d, %Y")
@@ -38,7 +40,8 @@ module Spree
           "results.user_email         as user_email",
           "spree_orders.number        as last_purchased_order_number",
           "results.last_purchase_date as last_purchase_date",
-          "results.purchased_count    as purchase_count"
+          "results.purchased_count    as purchase_count",
+          "results.total_purchased    as total_purchased"
         )
     end
 
@@ -56,7 +59,8 @@ module Spree
         .select(
           "spree_orders.email             as user_email",
           "max(spree_orders.completed_at) as last_purchase_date",
-          "count(spree_orders.email)      as purchased_count"
+          "count(spree_orders.email)      as purchased_count",
+          "SUM(spree_orders.total)        as total_purchased"
         )
         .group(
           "user_email"

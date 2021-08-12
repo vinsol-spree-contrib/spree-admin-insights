@@ -28,14 +28,14 @@ en:
         description: Will project the data about how many times product has been added to the cart.
         product_name: Product
         quantity_change: Cart Addition(Qty)
-        sku: Variant
+        options_values: Variant
       cart_removals:
         title: Product Removed from cart
         description: Will project the data about how many time product has been removed from cart.
         product_name: Product
         quantity_change: Cart Removal(Qty)
         removals: Removals
-        sku: Variant
+        options_values: Variant
       cart_updations:
         title: Product Updation
         description: Will project the data about how many times product has been updated from the cart.
@@ -43,8 +43,8 @@ en:
         quantity_decrease: Quantity Decreased(From Cart)
         quantity_increase: Quantity Increased(From Cart)
         removals: Quantity Removed(From Cart)
-        sku: Variant
         updations: Total Updation Requests
+        options_values: Variant
       product_views_to_cart_additions:
         title: Product 'Views' To 'Cart Additions'
         description: Ratio of number of views (on product show page) to number of times product has been added to the cart after view.
@@ -52,6 +52,7 @@ en:
         product_name: Product
         views: Show page views
         cart_to_view_ratio: Cart To View Ratio
+        options_values: Variant
       trending_search:
         title: Trending Searches
         description: You can view/search list of keywords which have been searched by customers.
@@ -69,6 +70,7 @@ en:
         last_purchased_order_number: Last Purchased Order
         purchase_count: Purchased Count
         user_email: Email
+        total_purchased: Total Purchased
       users_who_have_not_recently_purchased:
         title: Users who didn't purchase recently
         description: Number of users who have not purchased anything since a particular time period
@@ -129,15 +131,15 @@ en:
         title: Unique Purchases
         description: Will project the data about how many unique users have purchased a particular product.
         product_name: Product
-        sku: Variant
         sold_count: Sold Count
         users: Users
+        options_values: Variant
       best_selling_products:
         title: Best Selling Products
         description: Best/least Selling Products as per maximum quantities purchased.
         product_name: Product
-        sku: Variant
         sold_count: Sold Quantity
+        options_values: Variant
       product_views_to_purchases:
         title: Product 'Views' To 'Purchases'
         description: Ratio of number of views (on product show page) to number of times product has been purchased after view.
@@ -145,12 +147,13 @@ en:
         purchases: Purchases
         views: Views
         purchase_to_view_ratio: Purchase To View Ratio
+        options_values: Variant
       returned_products:
         title: Product Returned
         description: Number of products returned
         product_name: Product
         return_count: Returned Count
-        sku: Variant
+        options_values: Variant
       shipping_cost:
         title: Shipping Cost
         name: Shipping Method Name

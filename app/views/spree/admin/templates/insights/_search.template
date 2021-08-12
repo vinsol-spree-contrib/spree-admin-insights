@@ -44,7 +44,7 @@
               <div class="col-md-6">
                 <label for="search_start_date">{%= o['search_attributes']['start_date'] %}</label>
                 <div class="input-group">
-                  <input type="text" name="search[start_date]" id="search_start_date" class="datepicker datepicker-from form-control js-filterable" placeholder="Start">
+                  <input type="date" name="search[start_date]" id="search_start_date" class="datepicker datepicker-from form-control js-filterable" placeholder="Start">
                   <span class="input-group-addon">
                     <i class="icon icon-calendar"></i>
                   </span>
@@ -54,7 +54,7 @@
               <div class="col-md-6">
                 <label for="search_end_date">{%= o['search_attributes']['end_date'] %}</label>
                 <div class="input-group">
-                  <input type="text" name="search[end_date]" id="search_end_date" class="datepicker datepicker-to form-control js-filterable" placeholder="Stop">
+                  <input type="date" name="search[end_date]" id="search_end_date" class="datepicker datepicker-to form-control js-filterable" placeholder="Stop">
                   <span class="input-group-addon">
                     <i class="icon icon-calendar"></i>
                   </span>

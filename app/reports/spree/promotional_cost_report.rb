@@ -2,7 +2,7 @@ module Spree
   class PromotionalCostReport < Spree::Report
     DEFAULT_SORTABLE_ATTRIBUTE = :promotion_name
     HEADERS                    = { promotion_name: :string, usage_count: :integer, promotion_discount: :integer, promotion_code: :string, promotion_start_date: :date, promotion_end_date: :date }
-    SEARCH_ATTRIBUTES          = { start_date: :promotion_applied_from, end_date: :promotion_applied_till }
+    SEARCH_ATTRIBUTES          = { start_date: :promotion_applied_from, end_date: :promotion_applied_till, name: :promotion_name }
     SORTABLE_ATTRIBUTES        = [:promotion_name, :usage_count, :promotion_discount, :promotion_code, :promotion_start_date, :promotion_end_date]
 
     class Result < Spree::Report::TimedResult
@@ -68,6 +68,7 @@ module Spree
       Spree::PromotionAction
         .joins(:promotion)
         .joins(:adjustment)
+        .where(Spree::Promotion.arel_table[:name].matches(search_name))
         .where(spree_adjustments: { created_at: reporting_period })
         .select(
           'spree_promotions.starts_at   as promotion_start_date',
